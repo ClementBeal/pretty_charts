@@ -18,8 +18,8 @@ class LinePlotScreen extends StatelessWidget {
             height: 400,
             child: LinePlot(
               axes: Axes(
-                xLimits: (-1, 1),
-                yLimits: (-1, 1),
+                xLimits: (-1, 2),
+                yLimits: (-1, 4),
                 numberOfTicksOnX: 5,
                 numberOfTicksOnY: 5,
                 showGrid: true,

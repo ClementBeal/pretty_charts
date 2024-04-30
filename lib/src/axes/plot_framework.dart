@@ -17,8 +17,8 @@ class PlotFrameworkPainter extends CustomPainter {
 
     final xAxesNumberTicks = axes.numberOfTicksOnX;
     final yAxesNumberTicks = axes.numberOfTicksOnY;
-    final yAxesRange = axes.xLimits;
-    final xAxesRange = axes.yLimits;
+    final xAxesRange = axes.xLimits;
+    final yAxesRange = axes.yLimits;
 
     Paint axesPainter = Paint()
       ..color = Colors.grey.shade900
@@ -85,7 +85,8 @@ class PlotFrameworkPainter extends CustomPainter {
     }
 
     for (var i = 0; i < xAxesNumberTicks + 1; i++) {
-      final caption = xAxesRange.$2 / xAxesNumberTicks * i;
+      final caption = xAxesRange.$1 +
+          (xAxesRange.$2 - xAxesRange.$1) / xAxesNumberTicks * i;
       final textSpan = TextSpan(
         text: caption.toStringAsFixed(1),
         style: textStyle,
@@ -119,7 +120,8 @@ class PlotFrameworkPainter extends CustomPainter {
     }
 
     for (var i = 0; i < xAxesNumberTicks + 1; i++) {
-      final caption = xAxesRange.$2 / xAxesNumberTicks * i;
+      final caption = yAxesRange.$1 +
+          (yAxesRange.$2 - yAxesRange.$1) / yAxesNumberTicks * i;
       final textSpan = TextSpan(
         text: caption.toStringAsFixed(1),
         style: textStyle,

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 class AxesLimit {
   final double minLimit;
   final double maxLimit;
@@ -13,6 +15,10 @@ class AxesLimit {
       minLimit / scaleFactor,
       maxLimit / scaleFactor,
     );
+  }
+
+  AxesLimit translate(double value) {
+    return AxesLimit(minLimit + value, maxLimit + value);
   }
 }
 

@@ -9,7 +9,7 @@ class ChartViewer extends StatefulWidget {
   });
 
   final Widget child;
-  final void Function(double scaleFactor) onScale;
+  final void Function(double scaleFactor, Offset offset) onScale;
   final double initialScale;
 
   @override
@@ -19,6 +19,7 @@ class ChartViewer extends StatefulWidget {
 class _ChartViewerState extends State<ChartViewer> {
   double _scale = 1.0;
   double _tmpScale = 1.0;
+  Offset _offset = Offset.zero;
 
   @override
   void initState() {
@@ -36,7 +37,9 @@ class _ChartViewerState extends State<ChartViewer> {
       },
       onScaleUpdate: (details) {
         _scale = _tmpScale * details.scale;
-        widget.onScale(_scale);
+        _offset += details.focalPointDelta / 32;
+
+        widget.onScale(_scale, _offset);
       },
       child: widget.child,
     );

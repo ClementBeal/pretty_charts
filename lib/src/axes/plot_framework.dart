@@ -8,20 +8,24 @@ class PlotFrameworkPainter extends CustomPainter {
     super.repaint,
     required this.axes,
     required this.scaleFactor,
+    required this.offset,
   });
 
   final Axes axes;
   final double scaleFactor;
+  final Offset offset;
 
   @override
   void paint(Canvas canvas, Size size) {
     const double internalPadding = 50.0;
     const double axesPadding = 20.0;
+    print(offset);
+    print(scaleFactor);
 
     final xAxesNumberTicks = axes.numberOfTicksOnX;
     final yAxesNumberTicks = axes.numberOfTicksOnY;
-    final xAxesRange = axes.xLimits.scale(scaleFactor);
-    final yAxesRange = axes.yLimits.scale(scaleFactor);
+    final xAxesRange = axes.xLimits.translate(offset.dx).scale(scaleFactor);
+    final yAxesRange = axes.yLimits.translate(-offset.dy).scale(scaleFactor);
 
     Paint axesPainter = Paint()
       ..color = Colors.grey.shade900

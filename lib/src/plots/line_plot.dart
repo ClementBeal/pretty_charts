@@ -25,6 +25,7 @@ class _LinePlotState extends State<LinePlot>
   late Animation<double> _progressAnimation;
 
   double _scaleFactor = 1.0;
+  Offset _offset = Offset.zero;
 
   @override
   void initState() {
@@ -54,9 +55,10 @@ class _LinePlotState extends State<LinePlot>
   Widget build(BuildContext context) {
     return ChartViewer(
       initialScale: 1.0,
-      onScale: (double scaleFactor) {
+      onScale: (double scaleFactor, Offset offset) {
         setState(() {
           _scaleFactor = scaleFactor;
+          _offset = offset;
         });
       },
       child: ClipRect(
@@ -66,10 +68,12 @@ class _LinePlotState extends State<LinePlot>
             axes: widget.axes,
             animationProgress: _progressAnimation.value,
             onGenerate: widget.onGenerate,
+            offset: _offset,
           ),
           foregroundPainter: PlotFrameworkPainter(
             scaleFactor: _scaleFactor,
             axes: widget.axes,
+            offset: _offset,
           ),
         ),
       ),
@@ -84,11 +88,13 @@ class LinePlotPainter extends CustomPainter {
     required this.animationProgress,
     this.onGenerate,
     required this.scaleFactor,
+    required this.offset,
   });
 
   final Axes axes;
   final double Function(double x)? onGenerate;
   final double scaleFactor;
+  final Offset offset;
 
   /// progress value of the animation
   /// 0 is the start || 1 is the end
@@ -103,8 +109,8 @@ class LinePlotPainter extends CustomPainter {
 
     final xAxesNumberTicks = axes.numberOfTicksOnX;
     final yAxesNumberTicks = axes.numberOfTicksOnY;
-    final xAxesRange = axes.xLimits.scale(scaleFactor);
-    final yAxesRange = axes.yLimits.scale(scaleFactor);
+    final xAxesRange = axes.xLimits.translate(offset.dx).scale(scaleFactor);
+    final yAxesRange = axes.yLimits.translate(-offset.dy).scale(scaleFactor);
 
     final height = size.height;
     final width = size.width;

@@ -1,8 +1,6 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pretty_charts/src/axes/axes.dart';
 import 'package:pretty_charts/src/axes/plot_framework.dart';
 
@@ -10,9 +8,11 @@ class LinePlot extends StatefulWidget {
   const LinePlot({
     super.key,
     required this.axes,
+    this.onGenerate,
   });
 
   final Axes axes;
+  final double Function(double x)? onGenerate;
 
   @override
   State<LinePlot> createState() => _LinePlotState();
@@ -54,6 +54,7 @@ class _LinePlotState extends State<LinePlot>
         painter: LinePlotPainter(
           axes: widget.axes,
           animationProgress: _progressAnimation.value,
+          onGenerate: widget.onGenerate,
         ),
         foregroundPainter: PlotFrameworkPainter(
           axes: widget.axes,
@@ -68,9 +69,11 @@ class LinePlotPainter extends CustomPainter {
     super.repaint,
     required this.axes,
     required this.animationProgress,
+    this.onGenerate,
   });
 
   final Axes axes;
+  final double Function(double x)? onGenerate;
 
   /// progress value of the animation
   /// 0 is the start || 1 is the end
@@ -115,7 +118,7 @@ class LinePlotPainter extends CustomPainter {
 
     for (var i = 0; i < points + 1; i++) {
       final x = xAxesRange.minLimit + i * xAxesRange.getDiff() / points;
-      final y = (pow((x), 2));
+      final y = onGenerate?.call(x) ?? 0;
 
       final translatedX = axesOrigin.dx + i * curveStep;
 

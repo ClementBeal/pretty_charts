@@ -146,8 +146,11 @@ class LinePlotPainter extends CustomPainter {
 
     final currentLength = totalLength * animationProgress;
 
-    canvas.drawPath(
-        extractPathUntilLength(curvePath, currentLength), curvePainter);
+    final extractedPath = extractPathUntilLength(curvePath, currentLength);
+
+    canvas.clipRect(Rect.fromLTWH(
+        internalPadding, height - internalPadding, paddedWidth, -paddedHeight));
+    canvas.drawPath(extractedPath, curvePainter);
   }
 
   @override

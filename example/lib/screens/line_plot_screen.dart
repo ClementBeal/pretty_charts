@@ -22,6 +22,7 @@ class LinePlotScreen extends StatelessWidget {
                 yLimits: (-1, 1),
                 numberOfTicksOnX: 5,
                 numberOfTicksOnY: 5,
+                showGrid: true,
                 legend: "A great line plot",
               ),
             ),

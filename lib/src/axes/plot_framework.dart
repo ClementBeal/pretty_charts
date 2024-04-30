@@ -25,6 +25,11 @@ class PlotFrameworkPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.3;
 
+    final gridPainter = Paint()
+      ..color = Colors.grey
+      ..strokeWidth = 1.2
+      ..style = PaintingStyle.stroke;
+
     canvas.drawRect(
         Rect.fromLTWH(1, 1, size.width - 1, size.height - 1), axesPainter);
 
@@ -34,12 +39,15 @@ class PlotFrameworkPainter extends CustomPainter {
     final paddedWidth = size.width - 2 * internalPadding;
     final paddedHeight = size.height - 2 * internalPadding;
 
-    final topLeftCorner = Offset(internalPadding, internalPadding);
+    const topLeftCorner = Offset(internalPadding, internalPadding);
     final topRightCorner = topLeftCorner.translate(paddedWidth, 0);
     final bottomRightCorner = topRightCorner.translate(0, paddedHeight);
     final bottomLeftCorner = bottomRightCorner.translate(-paddedWidth, 0);
 
     final axesOrigin = bottomLeftCorner.translate(axesPadding, -axesPadding);
+
+    final axesWidth = paddedWidth - 2 * axesPadding;
+    final axesHeight = paddedHeight - 2 * axesPadding;
 
     // draw the box
     canvas.drawLine(topLeftCorner, topRightCorner, axesPainter);
@@ -49,35 +57,7 @@ class PlotFrameworkPainter extends CustomPainter {
 
     // draw the axes
 
-    // x axes
-    // canvas.drawLine(
-    //   topLeftCorner.translate(
-    //     0,
-    //     paddedHeight / 2,
-    //   ),
-    //   topLeftCorner.translate(
-    //     paddedWidth,
-    //     paddedHeight / 2,
-    //   ),
-    //   axesPainter,
-    // );
-
-    // // y axes
-    // canvas.drawLine(
-    //   topLeftCorner.translate(
-    //     paddedWidth / 2,
-    //     0,
-    //   ),
-    //   topLeftCorner.translate(
-    //     paddedWidth / 2,
-    //     paddedHeight,
-    //   ),
-    //   axesPainter,
-    // );
-
     // draw ticks
-
-    // actually linear
 
     const textStyle = TextStyle(
       color: Colors.black,
@@ -88,11 +68,20 @@ class PlotFrameworkPainter extends CustomPainter {
     final ySpacing = (paddedWidth - 2 * axesPadding) / yAxesNumberTicks;
 
     for (var i = 0; i < xAxesNumberTicks + 1; i++) {
+      final tickPosition = Offset(axesPadding + i * xSpacing, 0);
       canvas.drawLine(
-        bottomLeftCorner.translate(axesPadding + i * xSpacing, 0),
+        bottomLeftCorner.translate(tickPosition.dx, tickPosition.dy),
         bottomLeftCorner.translate(axesPadding + i * xSpacing, -8),
         axesPainter,
       );
+
+      if (axes.showGrid) {
+        canvas.drawLine(
+          axesOrigin.translate(i * xSpacing, axesPadding),
+          axesOrigin.translate(i * xSpacing, -axesHeight - axesPadding),
+          gridPainter,
+        );
+      }
     }
 
     for (var i = 0; i < xAxesNumberTicks + 1; i++) {
@@ -118,6 +107,15 @@ class PlotFrameworkPainter extends CustomPainter {
         bottomLeftCorner.translate(8, -axesPadding - i * ySpacing),
         axesPainter,
       );
+
+      if (axes.showGrid) {
+        // horizontal grid lines
+        canvas.drawLine(
+          axesOrigin.translate(-axesPadding, -i * ySpacing),
+          axesOrigin.translate(axesWidth + axesPadding, -i * ySpacing),
+          gridPainter,
+        );
+      }
     }
 
     for (var i = 0; i < xAxesNumberTicks + 1; i++) {
@@ -138,29 +136,33 @@ class PlotFrameworkPainter extends CustomPainter {
       );
     }
 
-    // if (axes.legend != null) {
-    //   final legendPainter = TextPainter(
-    //     textDirection: TextDirection.ltr,
-    //     text: TextSpan(
-    //       text: axes.legend!,
-    //       style: TextStyle(
-    //         color: Colors.black,
-    //         fontStyle: FontStyle.italic,
-    //         fontSize: 20,
-    //       ),
-    //     ),
-    //   );
+    if (axes.legend != null) {
+      drawLegend(canvas, width, height);
+    }
+  }
 
-    //   legendPainter.layout();
+  void drawLegend(Canvas canvas, double width, double height) {
+    final legendPainter = TextPainter(
+      textDirection: TextDirection.ltr,
+      text: TextSpan(
+        text: axes.legend!,
+        style: TextStyle(
+          color: Colors.black,
+          fontStyle: FontStyle.italic,
+          fontSize: 20,
+        ),
+      ),
+    );
 
-    //   legendPainter.paint(
-    //     canvas,
-    //     Offset(
-    //       width / 2 - legendPainter.width / 2,
-    //       height - legendPainter.height,
-    //     ),
-    //   );
-    // }
+    legendPainter.layout();
+
+    legendPainter.paint(
+      canvas,
+      Offset(
+        width / 2 - legendPainter.width / 2,
+        height - legendPainter.height,
+      ),
+    );
   }
 
   void drawVerticalAxes() {}

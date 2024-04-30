@@ -31,9 +31,7 @@ class _LinePlotState extends State<LinePlot>
       vsync: this,
       duration: Durations.extralong4,
     )..addListener(() {
-        setState(() {
-          print(_progressAnimation.value);
-        });
+        setState(() {});
       });
 
     _progressAnimation = Tween<double>(begin: 0, end: 1).animate(
@@ -145,7 +143,7 @@ Path extractPathUntilLength(
 ) {
   var currentLength = 0.0;
 
-  final path = new Path();
+  final path = Path();
 
   var metricsIterator = originalPath.computeMetrics().iterator;
 

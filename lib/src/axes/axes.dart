@@ -7,6 +7,7 @@ class Axes {
 
   /// legend to write on the plot
   final String? legend;
+  final bool showGrid;
 
   Axes({
     required this.xLimits,
@@ -14,5 +15,6 @@ class Axes {
     required this.numberOfTicksOnX,
     required this.numberOfTicksOnY,
     this.legend,
+    this.showGrid = false,
   });
 }

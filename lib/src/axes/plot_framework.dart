@@ -138,24 +138,6 @@ class PlotFrameworkPainter extends CustomPainter {
       );
     }
 
-    // draw a curve
-    // final curvePath = Path();
-    // final curvePainter = Paint()
-    //   ..color = Colors.green.shade400
-    //   ..style = PaintingStyle.stroke
-    //   ..strokeWidth = 3;
-    // curvePath.moveTo(0, height);
-
-    // final curveStep = width / 300;
-
-    // for (var i = 0; i < 300; i++) {
-    //   curvePath.lineTo(
-    //     i * curveStep,
-    //     height - (sin(i / 300)) * (height * yAxesRange.$2),
-    //   );
-    // }
-
-    // canvas.drawPath(curvePath, curvePainter);
     // if (axes.legend != null) {
     //   final legendPainter = TextPainter(
     //     textDirection: TextDirection.ltr,

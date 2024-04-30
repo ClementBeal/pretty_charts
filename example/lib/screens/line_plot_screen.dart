@@ -20,8 +20,8 @@ class LinePlotScreen extends StatelessWidget {
               axes: Axes(
                 xLimits: (-1, 1),
                 yLimits: (-1, 1),
-                numberOfTicksOnX: 10,
-                numberOfTicksOnY: 10,
+                numberOfTicksOnX: 5,
+                numberOfTicksOnY: 5,
                 legend: "A great line plot",
               ),
             ),

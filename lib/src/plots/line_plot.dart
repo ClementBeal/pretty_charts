@@ -49,13 +49,15 @@ class _LinePlotState extends State<LinePlot>
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: LinePlotPainter(
-        axes: widget.axes,
-        animationProgress: _progressAnimation.value,
-      ),
-      foregroundPainter: PlotFrameworkPainter(
-        axes: widget.axes,
+    return ClipRect(
+      child: CustomPaint(
+        painter: LinePlotPainter(
+          axes: widget.axes,
+          animationProgress: _progressAnimation.value,
+        ),
+        foregroundPainter: PlotFrameworkPainter(
+          axes: widget.axes,
+        ),
       ),
     );
   }
@@ -79,12 +81,12 @@ class LinePlotPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     const double internalPadding = 50.0;
     const double axesPadding = 20.0;
-    const int points = 100;
+    const int points = 300;
 
     final xAxesNumberTicks = axes.numberOfTicksOnX;
     final yAxesNumberTicks = axes.numberOfTicksOnY;
-    final yAxesRange = axes.xLimits;
-    final xAxesRange = axes.yLimits;
+    final xAxesRange = axes.xLimits;
+    final yAxesRange = axes.yLimits;
 
     final height = size.height;
     final width = size.width;
@@ -106,19 +108,31 @@ class LinePlotPainter extends CustomPainter {
       ..color = Colors.green.shade400
       ..style = PaintingStyle.stroke
       ..strokeWidth = 3;
-    // canvas.drawCircle(axesOrigin, 30, curvePainter);
-
-    curvePath.moveTo(axesOrigin.dx, axesOrigin.dy);
 
     final curveStep = axesWidth / points;
 
-    for (var i = 0; i < points + 1; i++) {
-      final computedValue = (pow((i / points), 2));
+    bool hasDrawFirstPoint = false;
 
-      curvePath.lineTo(
-        axesOrigin.dx + i * curveStep,
-        axesOrigin.dy - computedValue * (axesHeight * yAxesRange.$2),
-      );
+    for (var i = 0; i < points + 1; i++) {
+      final x = xAxesRange.$1 + i * (xAxesRange.$2 - xAxesRange.$1) / points;
+      final y = (pow((x), 2));
+
+      if (hasDrawFirstPoint) {
+        curvePath.lineTo(
+          axesOrigin.dx + i * curveStep,
+          axesOrigin.dy -
+              y / (yAxesRange.$2 - yAxesRange.$1) * axesHeight +
+              yAxesRange.$1 * axesHeight / (yAxesRange.$2 - yAxesRange.$1),
+        );
+      } else {
+        curvePath.moveTo(
+          axesOrigin.dx + i * curveStep,
+          axesOrigin.dy -
+              y / (yAxesRange.$2 - yAxesRange.$1) * axesHeight +
+              yAxesRange.$1 * axesHeight / (yAxesRange.$2 - yAxesRange.$1),
+        );
+        hasDrawFirstPoint = true;
+      }
     }
 
     final totalLength = curvePath

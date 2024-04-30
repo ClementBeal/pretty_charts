@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pretty_charts/src/axes/axes.dart';
 import 'package:pretty_charts/src/axes/plot_framework.dart';
+import 'package:pretty_charts/src/shared/chart_viewer.dart';
 
 class LinePlot extends StatefulWidget {
   const LinePlot({
@@ -22,6 +23,8 @@ class _LinePlotState extends State<LinePlot>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _progressAnimation;
+
+  double _scaleFactor = 1.0;
 
   @override
   void initState() {
@@ -49,15 +52,25 @@ class _LinePlotState extends State<LinePlot>
 
   @override
   Widget build(BuildContext context) {
-    return ClipRect(
-      child: CustomPaint(
-        painter: LinePlotPainter(
-          axes: widget.axes,
-          animationProgress: _progressAnimation.value,
-          onGenerate: widget.onGenerate,
-        ),
-        foregroundPainter: PlotFrameworkPainter(
-          axes: widget.axes,
+    return ChartViewer(
+      initialScale: 1.0,
+      onScale: (double scaleFactor) {
+        setState(() {
+          _scaleFactor = scaleFactor;
+        });
+      },
+      child: ClipRect(
+        child: CustomPaint(
+          painter: LinePlotPainter(
+            scaleFactor: _scaleFactor,
+            axes: widget.axes,
+            animationProgress: _progressAnimation.value,
+            onGenerate: widget.onGenerate,
+          ),
+          foregroundPainter: PlotFrameworkPainter(
+            scaleFactor: _scaleFactor,
+            axes: widget.axes,
+          ),
         ),
       ),
     );
@@ -70,10 +83,12 @@ class LinePlotPainter extends CustomPainter {
     required this.axes,
     required this.animationProgress,
     this.onGenerate,
+    required this.scaleFactor,
   });
 
   final Axes axes;
   final double Function(double x)? onGenerate;
+  final double scaleFactor;
 
   /// progress value of the animation
   /// 0 is the start || 1 is the end
@@ -88,8 +103,8 @@ class LinePlotPainter extends CustomPainter {
 
     final xAxesNumberTicks = axes.numberOfTicksOnX;
     final yAxesNumberTicks = axes.numberOfTicksOnY;
-    final xAxesRange = axes.xLimits;
-    final yAxesRange = axes.yLimits;
+    final xAxesRange = axes.xLimits.scale(scaleFactor);
+    final yAxesRange = axes.yLimits.scale(scaleFactor);
 
     final height = size.height;
     final width = size.width;

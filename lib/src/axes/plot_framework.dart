@@ -4,9 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:pretty_charts/pretty_charts.dart';
 
 class PlotFrameworkPainter extends CustomPainter {
-  PlotFrameworkPainter({super.repaint, required this.axes});
+  PlotFrameworkPainter({
+    super.repaint,
+    required this.axes,
+    required this.scaleFactor,
+  });
 
   final Axes axes;
+  final double scaleFactor;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -15,8 +20,8 @@ class PlotFrameworkPainter extends CustomPainter {
 
     final xAxesNumberTicks = axes.numberOfTicksOnX;
     final yAxesNumberTicks = axes.numberOfTicksOnY;
-    final xAxesRange = axes.xLimits;
-    final yAxesRange = axes.yLimits;
+    final xAxesRange = axes.xLimits.scale(scaleFactor);
+    final yAxesRange = axes.yLimits.scale(scaleFactor);
 
     Paint axesPainter = Paint()
       ..color = Colors.grey.shade900

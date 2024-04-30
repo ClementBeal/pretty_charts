@@ -7,6 +7,13 @@ class AxesLimit {
   double getDiff() {
     return maxLimit - minLimit;
   }
+
+  AxesLimit scale(double scaleFactor) {
+    return AxesLimit(
+      minLimit / scaleFactor,
+      maxLimit / scaleFactor,
+    );
+  }
 }
 
 class Axes {

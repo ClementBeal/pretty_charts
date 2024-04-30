@@ -1,11 +1,12 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pretty_charts/src/axes/axes.dart';
 import 'package:pretty_charts/src/axes/plot_framework.dart';
 
-class LinePlot extends StatelessWidget {
+class LinePlot extends StatefulWidget {
   const LinePlot({
     super.key,
     required this.axes,
@@ -14,28 +15,73 @@ class LinePlot extends StatelessWidget {
   final Axes axes;
 
   @override
+  State<LinePlot> createState() => _LinePlotState();
+}
+
+class _LinePlotState extends State<LinePlot>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _progressAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: Durations.extralong4,
+    )..addListener(() {
+        setState(() {
+          print(_progressAnimation.value);
+        });
+      });
+
+    _progressAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeIn),
+    );
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return CustomPaint(
       painter: LinePlotPainter(
-        axes: axes,
+        axes: widget.axes,
+        animationProgress: _progressAnimation.value,
       ),
       foregroundPainter: PlotFrameworkPainter(
-        axes: axes,
+        axes: widget.axes,
       ),
     );
   }
 }
 
 class LinePlotPainter extends CustomPainter {
-  LinePlotPainter({super.repaint, required this.axes});
+  LinePlotPainter({
+    super.repaint,
+    required this.axes,
+    required this.animationProgress,
+  });
 
   final Axes axes;
+
+  /// progress value of the animation
+  /// 0 is the start || 1 is the end
+  /// interval of value : [0, 1]
+  final double animationProgress;
 
   @override
   void paint(Canvas canvas, Size size) {
     const double internalPadding = 50.0;
     const double axesPadding = 20.0;
-    const int points = 10;
+    const int points = 100;
 
     final xAxesNumberTicks = axes.numberOfTicksOnX;
     final yAxesNumberTicks = axes.numberOfTicksOnY;
@@ -77,11 +123,52 @@ class LinePlotPainter extends CustomPainter {
       );
     }
 
-    canvas.drawPath(curvePath, curvePainter);
+    final totalLength = curvePath
+        .computeMetrics()
+        .fold(0.0, (prev, metric) => prev + metric.length);
+
+    final currentLength = totalLength * animationProgress;
+
+    canvas.drawPath(
+        extractPathUntilLength(curvePath, currentLength), curvePainter);
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return false;
   }
+}
+
+Path extractPathUntilLength(
+  Path originalPath,
+  double length,
+) {
+  var currentLength = 0.0;
+
+  final path = new Path();
+
+  var metricsIterator = originalPath.computeMetrics().iterator;
+
+  while (metricsIterator.moveNext()) {
+    var metric = metricsIterator.current;
+
+    var nextLength = currentLength + metric.length;
+
+    final isLastSegment = nextLength > length;
+    if (isLastSegment) {
+      final remainingLength = length - currentLength;
+      final pathSegment = metric.extractPath(0.0, remainingLength);
+
+      path.addPath(pathSegment, Offset.zero);
+      break;
+    } else {
+      // There might be a more efficient way of extracting an entire path
+      final pathSegment = metric.extractPath(0.0, metric.length);
+      path.addPath(pathSegment, Offset.zero);
+    }
+
+    currentLength = nextLength;
+  }
+
+  return path;
 }

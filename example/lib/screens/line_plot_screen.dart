@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pretty_charts/pretty_charts.dart';
 
-class ScatterPlotScreen extends StatelessWidget {
-  const ScatterPlotScreen({super.key});
+class LinePlotScreen extends StatelessWidget {
+  const LinePlotScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Scatter plot"),
+        title: Text("Line plot"),
       ),
       body: Center(
         child: Padding(
@@ -16,7 +16,15 @@ class ScatterPlotScreen extends StatelessWidget {
           child: SizedBox(
             width: 400,
             height: 400,
-            child: ScatterPlot(),
+            child: LinePlot(
+              axes: Axes(
+                xLimits: (-1, 1),
+                yLimits: (-1, 1),
+                numberOfTicksOnX: 10,
+                numberOfTicksOnY: 10,
+                legend: "A great line plot",
+              ),
+            ),
           ),
         ),
       ),

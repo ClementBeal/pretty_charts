@@ -1,3 +1,4 @@
 library pretty_charts;
 
-export 'src/plots/scatter_plot.dart' show ScatterPlot;
+export 'src/plots/line_plot.dart' show LinePlot;
+export 'src/axes/axes.dart' show Axes;

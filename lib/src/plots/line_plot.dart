@@ -1,14 +1,21 @@
 import 'package:flutter/widgets.dart';
-import 'package:pretty_charts/src/plot_framework.dart';
+import 'package:pretty_charts/src/axes/axes.dart';
+import 'package:pretty_charts/src/axes/plot_framework.dart';
 
-class ScatterPlot extends StatelessWidget {
-  const ScatterPlot({super.key});
+class LinePlot extends StatelessWidget {
+  const LinePlot({
+    super.key,
+    required this.axes,
+  });
+
+  final Axes axes;
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      foregroundPainter: PlotFrameworkPainter(),
-      child: SizedBox(),
+      foregroundPainter: PlotFrameworkPainter(
+        axes: axes,
+      ),
     );
   }
 }

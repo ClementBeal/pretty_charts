@@ -1,4 +1,4 @@
-import 'package:example/screens/scatter_plot_screen.dart';
+import 'package:example/screens/line_plot_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_charts/pretty_charts.dart';
 
@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => ScatterPlotScreen(),
+                  builder: (context) => LinePlotScreen(),
                 ),
               );
             },

@@ -8,8 +8,6 @@ class PlotFrameworkPainter extends CustomPainter {
 
   final Axes axes;
 
-  // Offset convertPoint(double x, double y, )
-
   @override
   void paint(Canvas canvas, Size size) {
     const double internalPadding = 50.0;
@@ -85,8 +83,8 @@ class PlotFrameworkPainter extends CustomPainter {
     }
 
     for (var i = 0; i < xAxesNumberTicks + 1; i++) {
-      final caption = xAxesRange.$1 +
-          (xAxesRange.$2 - xAxesRange.$1) / xAxesNumberTicks * i;
+      final caption = xAxesRange.minLimit +
+          (xAxesRange.maxLimit - xAxesRange.minLimit) / xAxesNumberTicks * i;
       final textSpan = TextSpan(
         text: caption.toStringAsFixed(1),
         style: textStyle,
@@ -120,8 +118,8 @@ class PlotFrameworkPainter extends CustomPainter {
     }
 
     for (var i = 0; i < xAxesNumberTicks + 1; i++) {
-      final caption = yAxesRange.$1 +
-          (yAxesRange.$2 - yAxesRange.$1) / yAxesNumberTicks * i;
+      final caption =
+          yAxesRange.minLimit + yAxesRange.getDiff() / yAxesNumberTicks * i;
       final textSpan = TextSpan(
         text: caption.toStringAsFixed(1),
         style: textStyle,

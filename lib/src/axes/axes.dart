@@ -1,6 +1,17 @@
+class AxesLimit {
+  final double minLimit;
+  final double maxLimit;
+
+  AxesLimit(this.minLimit, this.maxLimit);
+
+  double getDiff() {
+    return maxLimit - minLimit;
+  }
+}
+
 class Axes {
-  final (int, int) xLimits;
-  final (int, int) yLimits;
+  final AxesLimit xLimits;
+  final AxesLimit yLimits;
 
   final int numberOfTicksOnX;
   final int numberOfTicksOnY;

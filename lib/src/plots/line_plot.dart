@@ -114,22 +114,27 @@ class LinePlotPainter extends CustomPainter {
     bool hasDrawFirstPoint = false;
 
     for (var i = 0; i < points + 1; i++) {
-      final x = xAxesRange.$1 + i * (xAxesRange.$2 - xAxesRange.$1) / points;
+      final x = xAxesRange.minLimit + i * xAxesRange.getDiff() / points;
       final y = (pow((x), 2));
+
+      final translatedX = axesOrigin.dx + i * curveStep;
+
+      final translatedY = axesOrigin.dy -
+          y / yAxesRange.getDiff() * axesHeight +
+          yAxesRange.minLimit *
+              axesHeight /
+              (yAxesRange.maxLimit - yAxesRange.minLimit);
 
       if (hasDrawFirstPoint) {
         curvePath.lineTo(
-          axesOrigin.dx + i * curveStep,
-          axesOrigin.dy -
-              y / (yAxesRange.$2 - yAxesRange.$1) * axesHeight +
-              yAxesRange.$1 * axesHeight / (yAxesRange.$2 - yAxesRange.$1),
+          translatedX,
+          translatedY,
         );
       } else {
+        yAxesRange.minLimit * axesHeight / yAxesRange.getDiff();
         curvePath.moveTo(
-          axesOrigin.dx + i * curveStep,
-          axesOrigin.dy -
-              y / (yAxesRange.$2 - yAxesRange.$1) * axesHeight +
-              yAxesRange.$1 * axesHeight / (yAxesRange.$2 - yAxesRange.$1),
+          translatedX,
+          translatedY,
         );
         hasDrawFirstPoint = true;
       }

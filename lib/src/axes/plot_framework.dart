@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pretty_charts/pretty_charts.dart';
 import 'package:pretty_charts/src/axes/axes.dart';
+import 'package:pretty_charts/src/plots/line_plot/line_plot_data.dart';
 
 class PlotFrameworkPainter extends CustomPainter {
   PlotFrameworkPainter({

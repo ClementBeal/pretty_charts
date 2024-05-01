@@ -3,14 +3,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pretty_charts/pretty_charts.dart';
 
-class LinePlotScreen extends StatelessWidget {
-  const LinePlotScreen({super.key});
+class SimpleLinePlotScreen extends StatelessWidget {
+  const SimpleLinePlotScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Line plot"),
+        title: const Text("Line plot"),
       ),
       body: Center(
         child: Padding(
@@ -37,9 +37,13 @@ class LinePlotScreen extends StatelessWidget {
                   return x.toStringAsFixed(3);
                 },
               ),
-              onGenerate: (x) {
-                return pow(x, 3).toDouble();
-              },
+              data: [
+                LinePlotData(
+                  onGenerate: (x) {
+                    return pow(x, 3).toDouble();
+                  },
+                ),
+              ],
             ),
           ),
         ),

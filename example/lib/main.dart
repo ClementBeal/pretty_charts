@@ -1,6 +1,5 @@
-import 'package:example/screens/line_plot_screen.dart';
+import 'package:example/features/line_plot/line_plot_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:pretty_charts/pretty_charts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,7 +32,7 @@ class HomeScreen extends StatelessWidget {
       body: ListView(
         children: [
           ListTile(
-            title: Text("Scatter"),
+            title: Text("Line Chart"),
             subtitle: Text(""),
             onTap: () {
               Navigator.of(context).push(

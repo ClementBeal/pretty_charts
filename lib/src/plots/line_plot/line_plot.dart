@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:pretty_charts/src/axes/axes.dart';
 import 'package:pretty_charts/src/axes/plot_framework.dart';
+import 'package:pretty_charts/src/plots/line_plot/line_plot_data.dart';
 import 'package:pretty_charts/src/shared/chart_viewer.dart';
 
 class LinePlot extends StatefulWidget {
   const LinePlot({
     super.key,
     required this.axes,
-    this.onGenerate,
+    required this.data,
   });
 
   final Axes axes;
-  final double Function(double x)? onGenerate;
+  final List<LinePlotData> data;
 
   @override
   State<LinePlot> createState() => _LinePlotState();
@@ -65,8 +66,8 @@ class _LinePlotState extends State<LinePlot>
             scaleFactor: _scaleFactor,
             axes: widget.axes,
             animationProgress: _progressAnimation.value,
-            onGenerate: widget.onGenerate,
             offset: _offset,
+            data: widget.data,
           ),
           foregroundPainter: PlotFrameworkPainter(
             scaleFactor: _scaleFactor,
@@ -84,15 +85,15 @@ class LinePlotPainter extends CustomPainter {
     super.repaint,
     required this.axes,
     required this.animationProgress,
-    this.onGenerate,
     required this.scaleFactor,
     required this.offset,
+    required this.data,
   });
 
   final Axes axes;
-  final double Function(double x)? onGenerate;
   final double scaleFactor;
   final Offset offset;
+  final List<LinePlotData> data;
 
   /// progress value of the animation
   /// 0 is the start || 1 is the end
@@ -125,54 +126,56 @@ class LinePlotPainter extends CustomPainter {
     final axesHeight = paddedHeight - 2 * axesPadding;
 
     // draw a curve
-    final curvePath = Path();
-    final curvePainter = Paint()
-      ..color = Colors.green.shade400
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 3;
+    for (var d in data) {
+      final curvePath = Path();
+      final curvePainter = Paint()
+        ..color = d.lineColor
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 3;
 
-    final curveStep = axesWidth / points;
+      final curveStep = axesWidth / points;
 
-    bool hasDrawFirstPoint = false;
+      bool hasDrawFirstPoint = false;
 
-    for (var i = 0; i < points + 1; i++) {
-      final x = xAxesRange.minLimit + i * xAxesRange.getDiff() / points;
-      final y = onGenerate?.call(x) ?? 0;
+      for (var i = 0; i < points + 1; i++) {
+        final x = xAxesRange.minLimit + i * xAxesRange.getDiff() / points;
+        final y = d.onGenerate(x);
 
-      final translatedX = axesOrigin.dx + i * curveStep;
+        final translatedX = axesOrigin.dx + i * curveStep;
 
-      final translatedY = axesOrigin.dy -
-          y / yAxesRange.getDiff() * axesHeight +
-          yAxesRange.minLimit *
-              axesHeight /
-              (yAxesRange.maxLimit - yAxesRange.minLimit);
+        final translatedY = axesOrigin.dy -
+            y / yAxesRange.getDiff() * axesHeight +
+            yAxesRange.minLimit *
+                axesHeight /
+                (yAxesRange.maxLimit - yAxesRange.minLimit);
 
-      if (hasDrawFirstPoint) {
-        curvePath.lineTo(
-          translatedX,
-          translatedY,
-        );
-      } else {
-        yAxesRange.minLimit * axesHeight / yAxesRange.getDiff();
-        curvePath.moveTo(
-          translatedX,
-          translatedY,
-        );
-        hasDrawFirstPoint = true;
+        if (hasDrawFirstPoint) {
+          curvePath.lineTo(
+            translatedX,
+            translatedY,
+          );
+        } else {
+          yAxesRange.minLimit * axesHeight / yAxesRange.getDiff();
+          curvePath.moveTo(
+            translatedX,
+            translatedY,
+          );
+          hasDrawFirstPoint = true;
+        }
       }
+
+      final totalLength = curvePath
+          .computeMetrics()
+          .fold(0.0, (prev, metric) => prev + metric.length);
+
+      final currentLength = totalLength * animationProgress;
+
+      final extractedPath = extractPathUntilLength(curvePath, currentLength);
+
+      canvas.clipRect(Rect.fromLTWH(internalPadding, height - internalPadding,
+          paddedWidth, -paddedHeight));
+      canvas.drawPath(extractedPath, curvePainter);
     }
-
-    final totalLength = curvePath
-        .computeMetrics()
-        .fold(0.0, (prev, metric) => prev + metric.length);
-
-    final currentLength = totalLength * animationProgress;
-
-    final extractedPath = extractPathUntilLength(curvePath, currentLength);
-
-    canvas.clipRect(Rect.fromLTWH(
-        internalPadding, height - internalPadding, paddedWidth, -paddedHeight));
-    canvas.drawPath(extractedPath, curvePainter);
   }
 
   @override

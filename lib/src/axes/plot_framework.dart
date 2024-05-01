@@ -19,8 +19,6 @@ class PlotFrameworkPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     const double internalPadding = 50.0;
     const double axesPadding = 20.0;
-    print(offset);
-    print(scaleFactor);
 
     final xAxesNumberTicks = axes.numberOfTicksOnX;
     final yAxesNumberTicks = axes.numberOfTicksOnY;
@@ -95,7 +93,7 @@ class PlotFrameworkPainter extends CustomPainter {
       final caption = xAxesRange.minLimit +
           (xAxesRange.maxLimit - xAxesRange.minLimit) / xAxesNumberTicks * i;
       final textSpan = TextSpan(
-        text: caption.toStringAsFixed(1),
+        text: axes.xLabelsBuilder?.call(caption) ?? caption.toStringAsFixed(1),
         style: textStyle,
       );
       tickTextPainter.text = textSpan;
@@ -130,7 +128,7 @@ class PlotFrameworkPainter extends CustomPainter {
       final caption =
           yAxesRange.minLimit + yAxesRange.getDiff() / yAxesNumberTicks * i;
       final textSpan = TextSpan(
-        text: caption.toStringAsFixed(1),
+        text: axes.yLabelsBuilder?.call(caption) ?? caption.toStringAsFixed(1),
         style: textStyle,
       );
       tickTextPainter.text = textSpan;
@@ -145,21 +143,21 @@ class PlotFrameworkPainter extends CustomPainter {
       );
     }
 
-    if (axes.legend != null) {
+    if (axes.title != null) {
       drawLegend(canvas, width, height);
     }
   }
 
   void drawLegend(Canvas canvas, double width, double height) {
+    var textStyle = const TextStyle(
+      color: Colors.black,
+      fontSize: 20,
+    );
     final legendPainter = TextPainter(
       textDirection: TextDirection.ltr,
       text: TextSpan(
-        text: axes.legend!,
-        style: TextStyle(
-          color: Colors.black,
-          fontStyle: FontStyle.italic,
-          fontSize: 20,
-        ),
+        text: axes.title!,
+        style: textStyle,
       ),
     );
 
@@ -169,9 +167,50 @@ class PlotFrameworkPainter extends CustomPainter {
       canvas,
       Offset(
         width / 2 - legendPainter.width / 2,
-        height - legendPainter.height,
+        0,
       ),
     );
+
+    if (axes.xTitle != null) {
+      legendPainter.text = TextSpan(
+        text: axes.xTitle,
+        style: textStyle,
+      );
+
+      legendPainter.layout();
+      legendPainter.paint(
+        canvas,
+        Offset(
+          width / 2 - legendPainter.width / 2,
+          height - legendPainter.height * 1.5,
+        ),
+      );
+    }
+
+    if (axes.yTitle != null) {
+      legendPainter.text = TextSpan(
+        text: axes.yTitle,
+        style: textStyle,
+      );
+      legendPainter.layout();
+
+      final textPosition = Offset(0, height / 2);
+
+      canvas.save();
+      canvas.translate(textPosition.dx, textPosition.dy);
+      canvas.rotate(-pi / 2);
+      canvas.translate(-textPosition.dx, -textPosition.dy);
+
+      legendPainter.paint(
+        canvas,
+        Offset(
+          textPosition.dx - legendPainter.height / 2,
+          textPosition.dy,
+        ),
+      );
+
+      canvas.restore();
+    }
   }
 
   void drawVerticalAxes() {}

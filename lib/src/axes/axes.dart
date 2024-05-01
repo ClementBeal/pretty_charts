@@ -30,15 +30,33 @@ class Axes {
   final int numberOfTicksOnY;
 
   /// legend to write on the plot
-  final String? legend;
+  final String? title;
+
+  /// show the grid or not
   final bool showGrid;
+
+  ///
+  final String Function(double x)? xLabelsBuilder;
+
+  ///
+  final String Function(double y)? yLabelsBuilder;
+
+  ///
+  final String? xTitle;
+
+  ///
+  final String? yTitle;
 
   Axes({
     required this.xLimits,
     required this.yLimits,
     required this.numberOfTicksOnX,
     required this.numberOfTicksOnY,
-    this.legend,
+    this.title,
+    this.xTitle,
+    this.yTitle,
     this.showGrid = false,
+    this.xLabelsBuilder,
+    this.yLabelsBuilder,
   });
 }

@@ -37,7 +37,7 @@ class _ChartViewerState extends State<ChartViewer> {
       },
       onScaleUpdate: (details) {
         _scale = _tmpScale * details.scale;
-        _offset += details.focalPointDelta / 32;
+        _offset += details.focalPointDelta / 128;
 
         widget.onScale(_scale, _offset);
       },

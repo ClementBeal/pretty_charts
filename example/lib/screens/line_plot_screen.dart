@@ -25,7 +25,15 @@ class LinePlotScreen extends StatelessWidget {
                 numberOfTicksOnX: 5,
                 numberOfTicksOnY: 5,
                 showGrid: true,
-                legend: "A great line plot",
+                title: "A great line plot",
+                xTitle: "times(s)",
+                yTitle: "voltage (mV)",
+                xLabelsBuilder: (x) {
+                  return x.toStringAsFixed(2);
+                },
+                yLabelsBuilder: (x) {
+                  return x.toStringAsFixed(3);
+                },
               ),
               onGenerate: (x) {
                 return pow(x, 3).toDouble();

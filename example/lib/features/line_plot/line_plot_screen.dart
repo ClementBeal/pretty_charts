@@ -1,3 +1,4 @@
+import 'package:example/features/line_plot/screens/dashed_line_plot_screen.dart';
 import 'package:example/features/line_plot/screens/multiple_line_plots_screen.dart';
 import 'package:example/features/line_plot/screens/simple_line_plot_screen.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,18 @@ class LinePlotScreen extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => MultipleLinePlotsScreen(),
+                ),
+              );
+            },
+          ),
+          Divider(),
+          ListTile(
+            title: Text("Dashed Line Plot"),
+            subtitle: Text("Use a dashed line"),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => DashedLinePlotScreen(),
                 ),
               );
             },

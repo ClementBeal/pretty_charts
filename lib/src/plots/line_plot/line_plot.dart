@@ -127,7 +127,7 @@ class LinePlotPainter extends CustomPainter {
 
     // draw a curve
     for (var d in data) {
-      final curvePath = Path();
+      var curvePath = Path();
       final curvePainter = Paint()
         ..color = d.lineColor
         ..style = PaintingStyle.stroke
@@ -170,7 +170,17 @@ class LinePlotPainter extends CustomPainter {
 
       final currentLength = totalLength * animationProgress;
 
-      final extractedPath = extractPathUntilLength(curvePath, currentLength);
+      var extractedPath = extractPathUntilLength(curvePath, currentLength);
+
+      switch (d.lineStyle) {
+        case LineStyle.solid:
+          break;
+        case LineStyle.dashed:
+          extractedPath = useDashedLine(extractedPath);
+          break;
+        case LineStyle.point:
+          break;
+      }
 
       canvas.clipRect(Rect.fromLTWH(internalPadding, height - internalPadding,
           paddedWidth, -paddedHeight));
@@ -182,6 +192,32 @@ class LinePlotPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return false;
   }
+}
+
+Path useDashedLine(Path originalPath) {
+  const double dashLength = 8;
+  const double dashSpacing = 4;
+
+  final path = Path();
+  var metrics = originalPath.computeMetrics();
+  var metricsIterator = metrics.iterator;
+
+  while (metricsIterator.moveNext()) {
+    var metric = metricsIterator.current;
+
+    double offset = 0;
+    while (offset * (dashSpacing + dashLength) < metric.length) {
+      var extractedPath = metric.extractPath(
+        offset * (dashSpacing + dashLength),
+        offset * (dashSpacing + dashLength) + dashLength,
+      );
+      offset += 1;
+
+      path.addPath(extractedPath, Offset.zero);
+    }
+  }
+
+  return path;
 }
 
 Path extractPathUntilLength(

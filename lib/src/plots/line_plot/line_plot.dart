@@ -176,9 +176,10 @@ class LinePlotPainter extends CustomPainter {
         case LineStyle.solid:
           break;
         case LineStyle.dashed:
-          extractedPath = useDashedLine(extractedPath);
+          extractedPath = useDashedLine(extractedPath, 12, 8);
           break;
         case LineStyle.point:
+          extractedPath = usePointLine(extractedPath);
           break;
       }
 
@@ -194,10 +195,11 @@ class LinePlotPainter extends CustomPainter {
   }
 }
 
-Path useDashedLine(Path originalPath) {
-  const double dashLength = 8;
-  const double dashSpacing = 4;
+Path usePointLine(Path originalPath) {
+  return useDashedLine(originalPath, 2, 2);
+}
 
+Path useDashedLine(Path originalPath, double dashLength, double dashSpacing) {
   final path = Path();
   var metrics = originalPath.computeMetrics();
   var metricsIterator = metrics.iterator;

@@ -3,14 +3,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pretty_charts/pretty_charts.dart';
 
-class DashedLinePlotScreen extends StatelessWidget {
-  const DashedLinePlotScreen({super.key});
+class DashedPointedLinePlotScreen extends StatelessWidget {
+  const DashedPointedLinePlotScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Dashed line plot"),
+        title: const Text("Dashed & Pointed line plot"),
       ),
       body: Center(
         child: Padding(
@@ -40,6 +40,13 @@ class DashedLinePlotScreen extends StatelessWidget {
                     return pow(x, 3).toDouble();
                   },
                   lineStyle: LineStyle.dashed,
+                ),
+                LinePlotData(
+                  onGenerate: (x) {
+                    return pow(x, 2).toDouble();
+                  },
+                  lineColor: Colors.red,
+                  lineStyle: LineStyle.point,
                 ),
               ],
             ),

@@ -37,12 +37,12 @@ class LinePlotScreen extends StatelessWidget {
           ),
           Divider(),
           ListTile(
-            title: Text("Dashed Line Plot"),
-            subtitle: Text("Use a dashed line"),
+            title: Text("Dashed & Pointed Line Plot"),
+            subtitle: Text("Use dashed & pointed lines"),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => DashedLinePlotScreen(),
+                  builder: (context) => DashedPointedLinePlotScreen(),
                 ),
               );
             },

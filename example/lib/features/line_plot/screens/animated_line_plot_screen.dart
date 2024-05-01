@@ -3,14 +3,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pretty_charts/pretty_charts.dart';
 
-class MultipleLinePlotsScreen extends StatelessWidget {
-  const MultipleLinePlotsScreen({super.key});
+class AnimatedLinePlotScreen extends StatelessWidget {
+  const AnimatedLinePlotScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Multiple line plots"),
+        title: const Text("Animated line plot"),
       ),
       body: Center(
         child: Padding(
@@ -19,14 +19,14 @@ class MultipleLinePlotsScreen extends StatelessWidget {
             width: 400,
             height: 400,
             child: LinePlot(
-              animationDuration: Duration(milliseconds: 1250),
+              animationCurve: Curves.bounceInOut,
+              animationDuration: Duration(milliseconds: 3400),
               axes: Axes(
                 xLimits: AxesLimit(-1, 1),
                 yLimits: AxesLimit(-1, 1),
                 numberOfTicksOnX: 5,
                 numberOfTicksOnY: 5,
                 showGrid: true,
-                title: "A great line plot",
                 bordersToDisplay: [AxesBorder.left, AxesBorder.bottom],
                 arrowsToDisplay: [AxesBorder.top, AxesBorder.right],
                 xLabelsBuilder: (x) {
@@ -38,21 +38,8 @@ class MultipleLinePlotsScreen extends StatelessWidget {
               ),
               data: [
                 LinePlotData(
-                  lineColor: Colors.orange,
                   onGenerate: (x) {
                     return pow(x, 3).toDouble();
-                  },
-                ),
-                LinePlotData(
-                  lineColor: Colors.blue,
-                  onGenerate: (x) {
-                    return pow(x, 2).toDouble();
-                  },
-                ),
-                LinePlotData(
-                  lineColor: Colors.purple,
-                  onGenerate: (x) {
-                    return pow(x, 1).toDouble();
                   },
                 ),
               ],

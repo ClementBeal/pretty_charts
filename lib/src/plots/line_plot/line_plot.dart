@@ -9,10 +9,14 @@ class LinePlot extends StatefulWidget {
     super.key,
     required this.axes,
     required this.data,
+    this.animationDuration = Durations.extralong1,
+    this.animationCurve = Curves.easeInOut,
   });
 
   final Axes axes;
   final List<LinePlotData> data;
+  final Duration animationDuration;
+  final Curve animationCurve;
 
   @override
   State<LinePlot> createState() => _LinePlotState();
@@ -32,13 +36,16 @@ class _LinePlotState extends State<LinePlot>
 
     _controller = AnimationController(
       vsync: this,
-      duration: Durations.extralong4,
+      duration: widget.animationDuration,
     )..addListener(() {
         setState(() {});
       });
 
     _progressAnimation = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeIn),
+      CurvedAnimation(
+        parent: _controller,
+        curve: widget.animationCurve,
+      ),
     );
 
     _controller.forward();
@@ -183,8 +190,14 @@ class LinePlotPainter extends CustomPainter {
           break;
       }
 
-      canvas.clipRect(Rect.fromLTWH(internalPadding, height - internalPadding,
-          paddedWidth, -paddedHeight));
+      canvas.clipRect(
+        Rect.fromLTWH(
+          internalPadding,
+          height - internalPadding,
+          paddedWidth,
+          -paddedHeight,
+        ),
+      );
       canvas.drawPath(extractedPath, curvePainter);
     }
   }

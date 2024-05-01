@@ -1,3 +1,4 @@
+import 'package:example/features/line_plot/screens/animated_line_plot_screen.dart';
 import 'package:example/features/line_plot/screens/dashed_line_plot_screen.dart';
 import 'package:example/features/line_plot/screens/multiple_line_plots_screen.dart';
 import 'package:example/features/line_plot/screens/simple_line_plot_screen.dart';
@@ -13,41 +14,54 @@ class LinePlotScreen extends StatelessWidget {
       body: ListView(
         children: [
           ListTile(
-            title: Text("Simple Line Plot"),
-            subtitle: Text("A simple line chart with legends"),
+            title: const Text("Simple Line Plot"),
+            subtitle: const Text("A simple line chart with legends"),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => SimpleLinePlotScreen(),
+                  builder: (context) => const SimpleLinePlotScreen(),
                 ),
               );
             },
           ),
-          Divider(),
+          const Divider(),
           ListTile(
-            title: Text("Multiple Line Plots"),
-            subtitle: Text("Display different line plots on the same canvas"),
+            title: const Text("Multiple Line Plots"),
+            subtitle:
+                const Text("Display different line plots on the same canvas"),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => MultipleLinePlotsScreen(),
+                  builder: (context) => const MultipleLinePlotsScreen(),
                 ),
               );
             },
           ),
-          Divider(),
+          const Divider(),
           ListTile(
-            title: Text("Dashed & Pointed Line Plot"),
-            subtitle: Text("Use dashed & pointed lines"),
+            title: const Text("Dashed & Pointed Line Plot"),
+            subtitle: const Text("Use dashed & pointed lines"),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => DashedPointedLinePlotScreen(),
+                  builder: (context) => const DashedPointedLinePlotScreen(),
                 ),
               );
             },
           ),
-          Divider(),
+          const Divider(),
+          ListTile(
+            title: const Text("Animated Line Plot"),
+            subtitle: const Text("Different curve and duration"),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const AnimatedLinePlotScreen(),
+                ),
+              );
+            },
+          ),
+          const Divider(),
         ],
       ),
     );

@@ -39,19 +39,19 @@ class MultipleLinePlotsScreen extends StatelessWidget {
               data: [
                 LinePlotData(
                   lineColor: Colors.orange,
-                  onGenerate: (x) {
+                  onGenerateY: (x) {
                     return pow(x, 3).toDouble();
                   },
                 ),
                 LinePlotData(
                   lineColor: Colors.blue,
-                  onGenerate: (x) {
+                  onGenerateY: (x) {
                     return pow(x, 2).toDouble();
                   },
                 ),
                 LinePlotData(
                   lineColor: Colors.purple,
-                  onGenerate: (x) {
+                  onGenerateY: (x) {
                     return pow(x, 1).toDouble();
                   },
                 ),

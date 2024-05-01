@@ -39,7 +39,7 @@ class SimpleLinePlotScreen extends StatelessWidget {
               ),
               data: [
                 LinePlotData(
-                  onGenerate: (x) {
+                  onGenerateY: (x) {
                     return pow(x, 3).toDouble();
                   },
                 ),

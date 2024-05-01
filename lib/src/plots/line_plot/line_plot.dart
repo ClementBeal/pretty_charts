@@ -146,7 +146,7 @@ class LinePlotPainter extends CustomPainter {
 
       for (var i = 0; i < points + 1; i++) {
         final x = xAxesRange.minLimit + i * xAxesRange.getDiff() / points;
-        final y = d.onGenerate(x);
+        final y = d.onGenerateY(x);
 
         final translatedX = axesOrigin.dx + i * curveStep;
 

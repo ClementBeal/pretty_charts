@@ -36,13 +36,13 @@ class DashedPointedLinePlotScreen extends StatelessWidget {
               ),
               data: [
                 LinePlotData(
-                  onGenerate: (x) {
+                  onGenerateY: (x) {
                     return pow(x, 3).toDouble();
                   },
                   lineStyle: LineStyle.dashed,
                 ),
                 LinePlotData(
-                  onGenerate: (x) {
+                  onGenerateY: (x) {
                     return pow(x, 2).toDouble();
                   },
                   lineColor: Colors.red,

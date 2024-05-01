@@ -204,7 +204,7 @@ class PlotFrameworkPainter extends CustomPainter {
       legendPainter.paint(
         canvas,
         Offset(
-          textPosition.dx - legendPainter.height / 2,
+          textPosition.dx - legendPainter.width / 2,
           textPosition.dy,
         ),
       );

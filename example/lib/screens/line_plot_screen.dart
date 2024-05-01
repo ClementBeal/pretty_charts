@@ -28,6 +28,8 @@ class LinePlotScreen extends StatelessWidget {
                 title: "A great line plot",
                 xTitle: "times(s)",
                 yTitle: "voltage (mV)",
+                bordersToDisplay: [AxesBorder.left, AxesBorder.bottom],
+                arrowsToDisplay: [AxesBorder.top, AxesBorder.right],
                 xLabelsBuilder: (x) {
                   return x.toStringAsFixed(2);
                 },

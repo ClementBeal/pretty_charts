@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:pretty_charts/pretty_charts.dart';
+import 'package:pretty_charts/src/axes/axes.dart';
 
 class PlotFrameworkPainter extends CustomPainter {
   PlotFrameworkPainter({
@@ -29,6 +30,9 @@ class PlotFrameworkPainter extends CustomPainter {
       ..color = Colors.grey.shade900
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.3;
+    Paint arrowsPainter = Paint()
+      ..color = Colors.grey.shade900
+      ..style = PaintingStyle.fill;
 
     final gridPainter = Paint()
       ..color = Colors.grey
@@ -55,12 +59,61 @@ class PlotFrameworkPainter extends CustomPainter {
     final axesHeight = paddedHeight - 2 * axesPadding;
 
     // draw the box
-    canvas.drawLine(topLeftCorner, topRightCorner, axesPainter);
-    canvas.drawLine(topRightCorner, bottomRightCorner, axesPainter);
-    canvas.drawLine(bottomRightCorner, bottomLeftCorner, axesPainter);
-    canvas.drawLine(bottomLeftCorner, topLeftCorner, axesPainter);
+    if (axes.bordersToDisplay.contains(AxesBorder.top)) {
+      canvas.drawLine(topLeftCorner, topRightCorner, axesPainter);
+    }
+    if (axes.bordersToDisplay.contains(AxesBorder.right)) {
+      canvas.drawLine(topRightCorner, bottomRightCorner, axesPainter);
+    }
+    if (axes.bordersToDisplay.contains(AxesBorder.bottom)) {
+      canvas.drawLine(bottomRightCorner, bottomLeftCorner, axesPainter);
+    }
+    if (axes.bordersToDisplay.contains(AxesBorder.left)) {
+      canvas.drawLine(bottomLeftCorner, topLeftCorner, axesPainter);
+    }
 
-    // draw the axes
+    // draw the arrows
+
+    if (axes.arrowsToDisplay.contains(AxesBorder.top)) {
+      final leftArrowPath = Path()
+        ..moveTo(0, 10)
+        ..relativeLineTo(5, -10)
+        ..relativeLineTo(5, 10)
+        ..close();
+      canvas.drawPath(
+        leftArrowPath.shift(
+          Offset(
+            internalPadding - leftArrowPath.getBounds().width / 2,
+            internalPadding,
+          ),
+        ),
+        arrowsPainter,
+      );
+    }
+    if (axes.arrowsToDisplay.contains(AxesBorder.right)) {
+      final rightArrowPath = Path()
+        ..moveTo(0, 0)
+        ..relativeLineTo(10, 5)
+        ..relativeLineTo(-10, 5)
+        ..close();
+      canvas.drawPath(
+        rightArrowPath.shift(
+          Offset(
+            internalPadding + paddedWidth,
+            internalPadding +
+                paddedHeight -
+                rightArrowPath.getBounds().height / 2,
+          ),
+        ),
+        arrowsPainter,
+      );
+    }
+    // if (axes.arrowsToDisplay.contains(AxesBorder.bottom)) {
+    //   canvas.drawLine(bottomRightCorner, bottomLeftCorner, axesPainter);
+    // }
+    // if (axes.arrowsToDisplay.contains(AxesBorder.left)) {
+    //   canvas.drawLine(bottomLeftCorner, topLeftCorner, axesPainter);
+    // }
 
     // draw ticks
 

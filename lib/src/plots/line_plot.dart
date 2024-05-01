@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:pretty_charts/src/axes/axes.dart';
 import 'package:pretty_charts/src/axes/plot_framework.dart';

@@ -1,27 +1,3 @@
-import 'dart:ui';
-
-class AxesLimit {
-  final double minLimit;
-  final double maxLimit;
-
-  AxesLimit(this.minLimit, this.maxLimit);
-
-  double getDiff() {
-    return maxLimit - minLimit;
-  }
-
-  AxesLimit scale(double scaleFactor) {
-    return AxesLimit(
-      minLimit / scaleFactor,
-      maxLimit / scaleFactor,
-    );
-  }
-
-  AxesLimit translate(double value) {
-    return AxesLimit(minLimit + value, maxLimit + value);
-  }
-}
-
 class Axes {
   final AxesLimit xLimits;
   final AxesLimit yLimits;
@@ -47,6 +23,12 @@ class Axes {
   ///
   final String? yTitle;
 
+  ///
+  final List<AxesBorder> bordersToDisplay;
+
+  ///
+  final List<AxesBorder> arrowsToDisplay;
+
   Axes({
     required this.xLimits,
     required this.yLimits,
@@ -58,5 +40,36 @@ class Axes {
     this.showGrid = false,
     this.xLabelsBuilder,
     this.yLabelsBuilder,
+    this.bordersToDisplay = AxesBorder.values,
+    this.arrowsToDisplay = const [],
   });
+}
+
+class AxesLimit {
+  final double minLimit;
+  final double maxLimit;
+
+  AxesLimit(this.minLimit, this.maxLimit);
+
+  double getDiff() {
+    return maxLimit - minLimit;
+  }
+
+  AxesLimit scale(double scaleFactor) {
+    return AxesLimit(
+      minLimit / scaleFactor,
+      maxLimit / scaleFactor,
+    );
+  }
+
+  AxesLimit translate(double value) {
+    return AxesLimit(minLimit + value, maxLimit + value);
+  }
+}
+
+enum AxesBorder {
+  left,
+  top,
+  right,
+  bottom;
 }

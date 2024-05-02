@@ -1,3 +1,4 @@
+import 'package:example/features/contour_plot/contour_plot_screen.dart';
 import 'package:example/features/line_plot/line_plot_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -38,6 +39,17 @@ class HomeScreen extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => LinePlotScreen(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            title: Text("Contour Chart"),
+            subtitle: Text(""),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ContourPlotScreen(),
                 ),
               );
             },

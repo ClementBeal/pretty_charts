@@ -5,9 +5,17 @@ import 'package:pretty_charts/src/shared/color_maps/color_map.dart';
 class QualitativeColorMap extends ColorMap {
   QualitativeColorMap({required super.colors});
 
+  int i = -1;
+
   @override
   Color getColor(double value) {
-    return colors[value ~/ step];
+    i = (i + 1) % colors.length;
+    return colors[i];
+  }
+
+  @override
+  void reset() {
+    i = -1;
   }
 }
 

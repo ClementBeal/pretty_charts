@@ -116,6 +116,7 @@ class BarPlotPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    colorMap.reset();
     const double internalPadding = 50.0;
     const double axesPadding = 20.0;
 

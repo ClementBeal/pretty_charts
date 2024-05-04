@@ -9,5 +9,7 @@ abstract class ColorMap {
     step = 1 / (colors.length - 1);
   }
 
+  void reset();
+
   Color getColor(double value);
 }

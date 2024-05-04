@@ -8,6 +8,7 @@ import 'package:pretty_charts/src/plots/ternary_plot/ternary_plot_data.dart';
 import 'package:pretty_charts/src/shared/chart_viewer.dart';
 import 'package:pretty_charts/src/shared/color_maps/color_map.dart';
 import 'package:pretty_charts/src/shared/color_maps/qualitative_color_map.dart';
+import 'package:pretty_charts/src/shared/polygon_centroid.dart';
 
 class TernaryPlot extends StatefulWidget {
   const TernaryPlot({
@@ -85,6 +86,7 @@ class TernaryPlotPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    colorMap.reset();
     const double internalPadding = 50.0;
 
     final height = size.height;
@@ -184,25 +186,16 @@ class TernaryPlotPainter extends CustomPainter {
         canvas.drawPath(blockPath, blockPainter);
         canvas.drawPath(blockPath, blockBorderPainter);
 
-        var xCentroid = 0.0;
-        var yCentroid = 0.0;
-
-        for (var e in cartesianPositions) {
-          xCentroid += e.dx;
-          yCentroid += e.dy;
-        }
-
-        print(xCentroid / cartesianPositions.length);
-
-        xCentroid /= cartesianPositions.length;
-        yCentroid /= cartesianPositions.length;
+        final centroid = getPolygonCentroid(cartesianPositions);
 
         blockTextPainter.paint(
           canvas,
           Offset(
-            axesOrigin.dx + xCentroid * axesWidth - blockTextPainter.width / 2,
+            axesOrigin.dx +
+                centroid.dx * axesWidth -
+                blockTextPainter.width / 2,
             axesOrigin.dy -
-                yCentroid * axesHeight -
+                centroid.dy * axesHeight -
                 blockTextPainter.height / 2,
           ),
         );

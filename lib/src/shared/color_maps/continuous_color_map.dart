@@ -24,6 +24,9 @@ class ContinuousColorMap extends ColorMap {
 
     return tween.lerp((value - step * id) * colors.length)!;
   }
+
+  @override
+  void reset() {}
 }
 
 final whiteBlueSquential =

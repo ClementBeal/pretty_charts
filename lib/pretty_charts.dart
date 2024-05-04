@@ -19,3 +19,7 @@ export 'src/shared/color_maps/qualitative_color_map.dart'
 export 'src/plots/ternary_plot/ternary_plot.dart' show TernaryPlot;
 export 'src/plots/ternary_plot/ternary_plot_data.dart'
     show TernaryPlotData, TernaryPlotAxes, TernaryPosition;
+
+export 'src/plots/pie_plot/pie_plot.dart' show PiePlot;
+export 'src/plots/pie_plot/pie_plot_data.dart' show PiePlotData;
+export 'src/plots/pie_plot//pie_plot_config.dart' show PiePlotConfig;

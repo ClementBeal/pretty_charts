@@ -26,3 +26,6 @@ export 'src/plots/pie_plot//pie_plot_config.dart' show PiePlotConfig;
 
 export 'src/plots/scatter_plot/scatter_plot.dart' show ScatterPlot;
 export 'src/plots/scatter_plot/scatter_plot_data.dart' show ScatterPlotData;
+
+export 'src/plots/bubble_chart/bubble_chart.dart' show BubbleChart;
+export 'src/plots/bubble_chart/bubble_chart_data.dart' show BubbleChartData;

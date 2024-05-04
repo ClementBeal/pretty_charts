@@ -1,4 +1,5 @@
 import 'package:example/features/bar_plot/bar_plot.dart';
+import 'package:example/features/bubble_chart/bubble_chart_screen.dart';
 import 'package:example/features/contour_plot/contour_plot_screen.dart';
 import 'package:example/features/line_plot/line_plot_screen.dart';
 import 'package:example/features/pie_plot/pie_plot_screen.dart';
@@ -98,6 +99,17 @@ class HomeScreen extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => const ScatterPlotScreen(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text("Bubble Charts"),
+            subtitle: const Text(""),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const BubbleChartScreen(),
                 ),
               );
             },

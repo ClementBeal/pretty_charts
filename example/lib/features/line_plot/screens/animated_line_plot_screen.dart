@@ -20,8 +20,8 @@ class AnimatedLinePlotScreen extends StatelessWidget {
             height: 400,
             child: LinePlot(
               animationCurve: Curves.bounceInOut,
-              animationDuration: Duration(milliseconds: 3400),
-              axes: Axes(
+              animationDuration: const Duration(milliseconds: 3400),
+              axes: CartesianAxes(
                 xLimits: AxesLimit(-1, 1),
                 yLimits: AxesLimit(-1, 1),
                 numberOfTicksOnX: 5,

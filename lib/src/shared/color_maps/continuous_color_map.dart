@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pretty_charts/src/shared/color_maps/color_map.dart';
 
-class ColorMap {
-  final List<Color> colors;
-
+class ContinuousColorMap extends ColorMap {
   late List<ColorTween> tweens;
-  late double step;
 
-  ColorMap({required this.colors}) {
-    step = 1 / (colors.length - 1);
+  ContinuousColorMap({required super.colors}) {
     tweens = [];
 
     for (var i = 0; i < colors.length - 1; i++) {
@@ -20,6 +17,7 @@ class ColorMap {
     }
   }
 
+  @override
   Color getColor(double value) {
     final id = value ~/ step;
     final tween = tweens[id];
@@ -28,6 +26,7 @@ class ColorMap {
   }
 }
 
-final whiteBlueSquential = ColorMap(colors: [Colors.white, Colors.blue]);
-final blueGreenRedSquential =
-    ColorMap(colors: [Colors.blue.shade900, Colors.green, Colors.red.shade900]);
+final whiteBlueSquential =
+    ContinuousColorMap(colors: [Colors.white, Colors.blue]);
+final blueGreenRedSquential = ContinuousColorMap(
+    colors: [Colors.blue.shade900, Colors.green, Colors.red.shade900]);

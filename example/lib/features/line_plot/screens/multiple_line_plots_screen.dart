@@ -19,8 +19,8 @@ class MultipleLinePlotsScreen extends StatelessWidget {
             width: 400,
             height: 400,
             child: LinePlot(
-              animationDuration: Duration(milliseconds: 1250),
-              axes: Axes(
+              animationDuration: const Duration(milliseconds: 1250),
+              axes: CartesianAxes(
                 xLimits: AxesLimit(-1, 1),
                 yLimits: AxesLimit(-1, 1),
                 numberOfTicksOnX: 5,

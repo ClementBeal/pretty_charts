@@ -19,7 +19,7 @@ class SimpleLinePlotScreen extends StatelessWidget {
             width: 400,
             height: 400,
             child: LinePlot(
-              axes: Axes(
+              axes: CartesianAxes(
                 xLimits: AxesLimit(-1, 1),
                 yLimits: AxesLimit(-1, 1),
                 numberOfTicksOnX: 5,

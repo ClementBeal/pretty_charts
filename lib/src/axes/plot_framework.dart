@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pretty_charts/pretty_charts.dart';
 import 'package:pretty_charts/src/axes/axes.dart';
-import 'package:pretty_charts/src/plots/line_plot/line_plot_data.dart';
 
 class PlotFrameworkPainter extends CustomPainter {
   PlotFrameworkPainter({
@@ -13,7 +12,7 @@ class PlotFrameworkPainter extends CustomPainter {
     required this.offset,
   });
 
-  final Axes axes;
+  final CartesianAxes axes;
   final double scaleFactor;
   final Offset offset;
 

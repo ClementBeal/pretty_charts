@@ -1,5 +1,7 @@
+import 'package:example/features/bar_plot/bar_plot.dart';
 import 'package:example/features/contour_plot/contour_plot_screen.dart';
 import 'package:example/features/line_plot/line_plot_screen.dart';
+import 'package:example/features/ternary_plot/ternary_plot.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: HomeScreen(),
+      home: const HomeScreen(),
     );
   }
 }
@@ -33,23 +35,45 @@ class HomeScreen extends StatelessWidget {
       body: ListView(
         children: [
           ListTile(
-            title: Text("Line Chart"),
-            subtitle: Text(""),
+            title: const Text("Line Chart"),
+            subtitle: const Text(""),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => LinePlotScreen(),
+                  builder: (context) => const LinePlotScreen(),
                 ),
               );
             },
           ),
           ListTile(
-            title: Text("Contour Chart"),
-            subtitle: Text(""),
+            title: const Text("Contour Chart"),
+            subtitle: const Text(""),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => ContourPlotScreen(),
+                  builder: (context) => const ContourPlotScreen(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text("Bar Chart"),
+            subtitle: const Text(""),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const BarPlotScreen(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text("Ternary Plot"),
+            subtitle: const Text(""),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const TernaryPlotScreen(),
                 ),
               );
             },

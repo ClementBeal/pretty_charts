@@ -15,7 +15,7 @@ class BasicContourPlotScreen extends StatelessWidget {
           width: 700,
           height: 700,
           child: ContourPlot(
-            axes: Axes(
+            axes: CartesianAxes(
               xLimits: AxesLimit(-3, 3),
               yLimits: AxesLimit(-2, 2),
               numberOfTicksOnX: 6,

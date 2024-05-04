@@ -1,4 +1,6 @@
-class Axes {
+abstract class Axes {}
+
+class CartesianAxes extends Axes {
   final AxesLimit xLimits;
   final AxesLimit yLimits;
 
@@ -29,7 +31,7 @@ class Axes {
   ///
   final List<AxesBorder> arrowsToDisplay;
 
-  Axes({
+  CartesianAxes({
     required this.xLimits,
     required this.yLimits,
     required this.numberOfTicksOnX,

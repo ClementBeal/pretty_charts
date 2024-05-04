@@ -2,13 +2,12 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_charts/src/axes/axes.dart';
 import 'package:pretty_charts/src/axes/plot_framework.dart';
 import 'package:pretty_charts/src/plots/contour_plot/contour_plot_data.dart';
 import 'package:pretty_charts/src/shared/chart_viewer.dart';
-import 'package:pretty_charts/src/shared/color_maps/sequential_color_map.dart';
+import 'package:pretty_charts/src/shared/color_maps/continuous_color_map.dart';
 
 class ContourPlot extends StatefulWidget {
   const ContourPlot({
@@ -19,7 +18,7 @@ class ContourPlot extends StatefulWidget {
     this.animationCurve = Curves.easeInOut,
   });
 
-  final Axes axes;
+  final CartesianAxes axes;
   final List<ContourPlotData> data;
   final Duration animationDuration;
   final Curve animationCurve;
@@ -103,7 +102,7 @@ class ContourPlotPainter extends CustomPainter {
     required this.data,
   });
 
-  final Axes axes;
+  final CartesianAxes axes;
   final double scaleFactor;
   final Offset offset;
   final List<ContourPlotData> data;
@@ -131,7 +130,7 @@ class ContourPlotPainter extends CustomPainter {
     final paddedWidth = size.width - 2 * internalPadding;
     final paddedHeight = size.height - 2 * internalPadding;
 
-    final paddedTopLeftCorner = Offset(internalPadding, internalPadding);
+    const paddedTopLeftCorner = Offset(internalPadding, internalPadding);
 
     final axesOrigin = Offset(
       internalPadding + axesPadding,
@@ -313,13 +312,13 @@ class ContourPlotPainter extends CustomPainter {
     double height,
     double minValue,
     double maxValue,
-    ColorMap colorMap,
+    ContinuousColorMap colorMap,
   ) {
     const rectangleWidth = 30 / 2;
     final painter = Paint()
       ..shader = ui.Gradient.linear(
         Offset(rectangleWidth, height),
-        Offset(rectangleWidth, 0),
+        const Offset(rectangleWidth, 0),
         colorMap.colors,
         List.generate(
             colorMap.colors.length, (i) => i * (1 / colorMap.colors.length)),

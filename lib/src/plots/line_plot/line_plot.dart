@@ -13,7 +13,7 @@ class LinePlot extends StatefulWidget {
     this.animationCurve = Curves.easeInOut,
   });
 
-  final Axes axes;
+  final CartesianAxes axes;
   final List<LinePlotData> data;
   final Duration animationDuration;
   final Curve animationCurve;
@@ -97,7 +97,7 @@ class LinePlotPainter extends CustomPainter {
     required this.data,
   });
 
-  final Axes axes;
+  final CartesianAxes axes;
   final double scaleFactor;
   final Offset offset;
   final List<LinePlotData> data;

@@ -160,7 +160,7 @@ class BarPlotPainter extends CustomPainter {
       final totalElement = d.x.length;
 
       for (var i = 0; i < totalElement; i++) {
-        final barHeight = (d.y[i] / maxValue) * axesHeight;
+        final barHeight = (d.y[i] / maxValue) * axesHeight * animationProgress;
         final curvePath = Path();
 
         curvePath.addRect(

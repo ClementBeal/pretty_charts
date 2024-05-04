@@ -2,6 +2,7 @@ import 'package:example/features/bar_plot/bar_plot.dart';
 import 'package:example/features/contour_plot/contour_plot_screen.dart';
 import 'package:example/features/line_plot/line_plot_screen.dart';
 import 'package:example/features/pie_plot/pie_plot_screen.dart';
+import 'package:example/features/scatter_plot/scatter_plot_screen.dart';
 import 'package:example/features/ternary_plot/ternary_plot.dart';
 import 'package:flutter/material.dart';
 
@@ -86,6 +87,17 @@ class HomeScreen extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => const PiePlotScreen(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text("Scatter Plot"),
+            subtitle: const Text(""),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const ScatterPlotScreen(),
                 ),
               );
             },

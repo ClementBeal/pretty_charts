@@ -23,3 +23,6 @@ export 'src/plots/ternary_plot/ternary_plot_data.dart'
 export 'src/plots/pie_plot/pie_plot.dart' show PiePlot;
 export 'src/plots/pie_plot/pie_plot_data.dart' show PiePlotData;
 export 'src/plots/pie_plot//pie_plot_config.dart' show PiePlotConfig;
+
+export 'src/plots/scatter_plot/scatter_plot.dart' show ScatterPlot;
+export 'src/plots/scatter_plot/scatter_plot_data.dart' show ScatterPlotData;

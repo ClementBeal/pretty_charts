@@ -115,8 +115,8 @@ class LinePlotPainter extends CustomPainter {
 
     final xAxesNumberTicks = axes.numberOfTicksOnX;
     final yAxesNumberTicks = axes.numberOfTicksOnY;
-    final xAxesRange = axes.xLimits.translate(offset.dx).scale(scaleFactor);
-    final yAxesRange = axes.yLimits.translate(-offset.dy).scale(scaleFactor);
+    final xAxesRange = axes.xLimits.translate(-offset.dx).scale(scaleFactor);
+    final yAxesRange = axes.yLimits.translate(offset.dy).scale(scaleFactor);
 
     final height = size.height;
     final width = size.width;

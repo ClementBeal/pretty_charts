@@ -29,3 +29,6 @@ export 'src/plots/scatter_plot/scatter_plot_data.dart' show ScatterPlotData;
 
 export 'src/plots/bubble_chart/bubble_chart.dart' show BubbleChart;
 export 'src/plots/bubble_chart/bubble_chart_data.dart' show BubbleChartData;
+
+export 'src/plots/dot_plot/dot_plot.dart' show DotPlot;
+export 'src/plots/dot_plot/dot_plot_data.dart' show DotPlotData;

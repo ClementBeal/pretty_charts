@@ -32,3 +32,6 @@ export 'src/plots/bubble_chart/bubble_chart_data.dart' show BubbleChartData;
 
 export 'src/plots/dot_plot/dot_plot.dart' show DotPlot;
 export 'src/plots/dot_plot/dot_plot_data.dart' show DotPlotData;
+
+export 'src/plots/treemap_chart/treemap_chart.dart' show TreeMapChart;
+export 'src/plots/treemap_chart/treemap_chart_data.dart' show TreeMapChartData;

@@ -6,6 +6,7 @@ import 'package:example/features/line_plot/line_plot_screen.dart';
 import 'package:example/features/pie_plot/pie_plot_screen.dart';
 import 'package:example/features/scatter_plot/scatter_plot_screen.dart';
 import 'package:example/features/ternary_plot/ternary_plot.dart';
+import 'package:example/features/treemap_chart/treemap_chart_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -122,6 +123,17 @@ class HomeScreen extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => const DotPlotScreen(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text("Treemap Charts"),
+            subtitle: const Text(""),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const TreeMapChartScreen(),
                 ),
               );
             },

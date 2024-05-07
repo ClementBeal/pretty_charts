@@ -141,6 +141,7 @@ class _TreemapBuilderState extends State<TreemapBuilder> {
       sections[i].color = color;
 
       if (sections[i].data.children != null) {
+        // the children have no color. We use the parent's color
         i += sections[i].data.children!.length;
       }
     }

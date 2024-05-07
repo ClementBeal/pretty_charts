@@ -35,3 +35,8 @@ export 'src/plots/dot_plot/dot_plot_data.dart' show DotPlotData;
 
 export 'src/plots/treemap_chart/treemap_chart.dart' show TreeMapChart;
 export 'src/plots/treemap_chart/treemap_chart_data.dart' show TreeMapChartData;
+
+export 'src/plots/dependency_wheel/dependency_wheel.dart'
+    show DependencyWheelChart;
+export 'src/plots/dependency_wheel/dependency_wheel_data.dart'
+    show DependencyWheelChartData;

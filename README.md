@@ -1,6 +1,5 @@
-# /!\ DISCLAIMER /!\
-
-It's still in progress. I'm trying to draw the charts that are not provided by the other packages first. Then I'll add the interaction. 
+> [!IMPORTANT]
+> It's still in progress. I'm trying to draw the charts that are not provided by the other packages first. Then I'll add the interaction. 
 The API might change because it's currently experiments.
 
 # Pretty Charts
@@ -22,8 +21,8 @@ cd example
 flutter run
 ```
 
-[!CAUTION]
-There's a bug with Firefox making the rendering very slow. Use the demo with a Chromium-based browser instead.
+> [!CAUTION]
+> There's a bug with Firefox making the rendering very slow. Use the demo with a Chromium-based browser instead.
 
 ## Available charts
 

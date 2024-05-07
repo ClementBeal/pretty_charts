@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pretty_charts/pretty_charts.dart';
-import 'package:pretty_charts/src/plots/line_plot/line_plot.dart';
 import 'package:pretty_charts/src/shared/chart_viewer.dart';
 import 'package:pretty_charts/src/shared/color_maps/color_map.dart';
 
@@ -70,15 +69,18 @@ class _PiePlotState extends State<PiePlot> with SingleTickerProviderStateMixin {
           _offset = offset;
         });
       },
-      child: ClipRect(
-        child: CustomPaint(
-          painter: PiePlotPainter(
-            config: widget.config,
-            scaleFactor: _scaleFactor,
-            animationProgress: _progressAnimation.value,
-            offset: _offset,
-            data: widget.data,
-            colorMap: widget.colorMap ?? pastel1,
+      child: LayoutBuilder(
+        builder: (context, constraints) => ClipRect(
+          child: CustomPaint(
+            size: Size(constraints.maxWidth, constraints.maxHeight),
+            painter: PiePlotPainter(
+              config: widget.config,
+              scaleFactor: _scaleFactor,
+              animationProgress: _progressAnimation.value,
+              offset: _offset,
+              data: widget.data,
+              colorMap: widget.colorMap ?? pastel1,
+            ),
           ),
         ),
       ),

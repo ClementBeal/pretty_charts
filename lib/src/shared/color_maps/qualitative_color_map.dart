@@ -37,17 +37,29 @@ final pastel17 = QualitativeColorMap(
     const Color(0xFFFFB347),
     const Color(0xFFB39EB5),
     const Color(0xFFFF6961),
-    Color.fromARGB(255, 145, 50, 173),
+    const Color.fromARGB(255, 145, 50, 173),
     const Color(0xFFABC798),
     const Color(0xFFD90368),
     const Color(0xFF2E294E),
-    Color.fromARGB(255, 250, 214, 36),
+    const Color.fromARGB(255, 250, 214, 36),
     const Color(0xFFC1666B),
-    Color.fromARGB(255, 189, 119, 86),
-    Color.fromARGB(255, 247, 97, 132),
+    const Color.fromARGB(255, 189, 119, 86),
+    const Color.fromARGB(255, 247, 97, 132),
     const Color(0xFF768948),
     const Color(0xFF533745),
     const Color(0xFF3a4454),
     const Color(0xFF031d44),
+  ],
+);
+
+final pastel2 = QualitativeColorMap(
+  colors: [
+    const Color(0xFFFF6961),
+    const Color.fromARGB(255, 145, 50, 173),
+    const Color(0xFFD90368),
+    const Color(0xFF2E294E),
+    const Color.fromARGB(255, 247, 97, 132),
+    const Color(0xFF768948),
+    const Color(0xFF533745),
   ],
 );

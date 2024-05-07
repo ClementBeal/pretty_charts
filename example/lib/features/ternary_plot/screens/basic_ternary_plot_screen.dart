@@ -19,7 +19,7 @@ class BasicTernaryPlotScreen extends StatelessWidget {
               leftAxesTitle: "",
               rightAxesTitle: "",
             ),
-            data: [],
+            data: const [],
           ),
         ),
       ),

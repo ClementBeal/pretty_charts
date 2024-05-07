@@ -1,10 +1,8 @@
 import 'dart:math' as math;
 
 import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_charts/pretty_charts.dart';
-import 'package:pretty_charts/src/axes/plot_framework.dart';
 import 'package:pretty_charts/src/shared/chart_viewer.dart';
 import 'package:pretty_charts/src/shared/color_maps/color_map.dart';
 
@@ -72,15 +70,18 @@ class _DotPlotState extends State<DotPlot> with SingleTickerProviderStateMixin {
           _offset = offset;
         });
       },
-      child: ClipRect(
-        child: CustomPaint(
-          painter: DotPlotPainter(
-            scaleFactor: _scaleFactor,
-            animationProgress: _progressAnimation.value,
-            offset: _offset,
-            data: widget.data,
-            colorMap: widget.colorMap ?? pastel1,
-            axes: widget.axes,
+      child: LayoutBuilder(
+        builder: (context, constraints) => ClipRect(
+          child: CustomPaint(
+            size: Size(constraints.maxWidth, constraints.maxHeight),
+            painter: DotPlotPainter(
+              scaleFactor: _scaleFactor,
+              animationProgress: _progressAnimation.value,
+              offset: _offset,
+              data: widget.data,
+              colorMap: widget.colorMap ?? pastel1,
+              axes: widget.axes,
+            ),
           ),
         ),
       ),
@@ -112,7 +113,7 @@ class DotPlotPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final textStyle = const TextStyle(
+    const textStyle = TextStyle(
       color: Colors.black,
       fontSize: 18,
     );
@@ -193,7 +194,7 @@ class DotPlotPainter extends CustomPainter {
 
     double height = 0;
 
-    for (var (i, d) in data.indexed) {
+    for (var (_, d) in data.indexed) {
       textPainter.text = TextSpan(
         text: d.name,
         style: textStyle,

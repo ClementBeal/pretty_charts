@@ -12,29 +12,29 @@ class TreeMapChartScreen extends StatelessWidget {
       body: ListView(
         children: [
           ListTile(
-            title: Text("Basic Treemap chart"),
-            subtitle: Text(""),
+            title: const Text("Basic Treemap chart"),
+            subtitle: const Text(""),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => BasicTreeMapChartScreen(),
+                  builder: (context) => const BasicTreeMapChartScreen(),
                 ),
               );
             },
           ),
-          Divider(),
+          const Divider(),
           ListTile(
-            title: Text("Category Treemap chart"),
-            subtitle: Text(""),
+            title: const Text("Category Treemap chart"),
+            subtitle: const Text(""),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => CategoryTreeMapChartScreen(),
+                  builder: (context) => const CategoryTreeMapChartScreen(),
                 ),
               );
             },
           ),
-          Divider(),
+          const Divider(),
         ],
       ),
     );

@@ -1,8 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:pretty_charts/src/axes/axes.dart';
-import 'package:pretty_charts/src/axes/plot_framework.dart';
 import 'package:pretty_charts/src/plots/line_plot/line_plot.dart';
 import 'package:pretty_charts/src/plots/ternary_plot/ternary_plot_data.dart';
 import 'package:pretty_charts/src/shared/chart_viewer.dart';
@@ -40,14 +38,17 @@ class _TernaryPlotState extends State<TernaryPlot> {
           _offset = offset;
         });
       },
-      child: ClipRect(
-        child: CustomPaint(
-          painter: TernaryPlotPainter(
-            scaleFactor: _scaleFactor,
-            axes: widget.axes,
-            offset: _offset,
-            data: widget.data,
-            colorMap: widget.colorMap ?? pastel1,
+      child: LayoutBuilder(
+        builder: (context, constraints) => ClipRect(
+          child: CustomPaint(
+            size: Size(constraints.maxWidth, constraints.maxHeight),
+            painter: TernaryPlotPainter(
+              scaleFactor: _scaleFactor,
+              axes: widget.axes,
+              offset: _offset,
+              data: widget.data,
+              colorMap: widget.colorMap ?? pastel1,
+            ),
           ),
         ),
       ),
@@ -88,9 +89,6 @@ class TernaryPlotPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     colorMap.reset();
     const double internalPadding = 50.0;
-
-    final height = size.height;
-    final width = size.width;
 
     final paddedWidth = size.width - 2 * internalPadding;
     final paddedHeight = size.height - 2 * internalPadding;
@@ -199,8 +197,6 @@ class TernaryPlotPainter extends CustomPainter {
                 blockTextPainter.height / 2,
           ),
         );
-
-        // print(cartesianPositions);
       }
     }
   }

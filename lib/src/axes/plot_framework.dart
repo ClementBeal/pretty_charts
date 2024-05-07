@@ -39,9 +39,6 @@ class PlotFrameworkPainter extends CustomPainter {
       ..strokeWidth = 1.2
       ..style = PaintingStyle.stroke;
 
-    canvas.drawRect(
-        Rect.fromLTWH(1, 1, size.width - 1, size.height - 1), axesPainter);
-
     final height = size.height;
     final width = size.width;
 

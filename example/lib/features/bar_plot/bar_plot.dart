@@ -1,6 +1,6 @@
 import 'package:example/features/bar_plot/screens/all_space_basic_bar_plot_screen.dart';
 import 'package:example/features/bar_plot/screens/basic_bar_plot_screen.dart';
-import 'package:example/features/bar_plot/screens/stacked_bar_plot_screen%20copy.dart';
+import 'package:example/features/bar_plot/screens/stacked_bar_plot_screen.dart';
 import 'package:flutter/material.dart';
 
 class BarPlotScreen extends StatelessWidget {

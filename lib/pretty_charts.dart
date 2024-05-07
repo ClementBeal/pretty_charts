@@ -14,7 +14,7 @@ export 'src/axes/axes.dart' show CartesianAxes, AxesLimit, AxesBorder;
 export 'src/shared/color_maps/continuous_color_map.dart'
     show ContinuousColorMap, blueGreenRedSquential, whiteBlueSquential;
 export 'src/shared/color_maps/qualitative_color_map.dart'
-    show QualitativeColorMap, pastel1, pastel17;
+    show QualitativeColorMap, pastel1, pastel17, pastel2;
 
 export 'src/plots/ternary_plot/ternary_plot.dart' show TernaryPlot;
 export 'src/plots/ternary_plot/ternary_plot_data.dart'

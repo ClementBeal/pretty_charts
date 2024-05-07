@@ -9,34 +9,34 @@ class ScatterPlotScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Scatter plots"),
+        title: const Text("Scatter plots"),
       ),
       body: ListView(
         children: [
           ListTile(
-            title: Text("Basic scatter plot"),
-            subtitle: Text(""),
+            title: const Text("Basic scatter plot"),
+            subtitle: const Text(""),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => BasicScatterPlot(),
+                  builder: (context) => const BasicScatterPlot(),
                 ),
               );
             },
           ),
-          Divider(),
+          const Divider(),
           ListTile(
-            title: Text("Massive Scatter plot"),
-            subtitle: Text("Lot of points (>100 000)"),
+            title: const Text("Massive Scatter plot"),
+            subtitle: const Text("Lot of points (>100 000)"),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => MassiveScatterPlot(),
+                  builder: (context) => const MassiveScatterPlot(),
                 ),
               );
             },
           ),
-          Divider(),
+          const Divider(),
         ],
       ),
     );

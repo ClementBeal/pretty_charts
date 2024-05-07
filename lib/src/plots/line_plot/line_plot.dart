@@ -59,30 +59,35 @@ class _LinePlotState extends State<LinePlot>
 
   @override
   Widget build(BuildContext context) {
-    return ChartViewer(
-      initialScale: 1.0,
-      onScale: (double scaleFactor, Offset offset) {
-        setState(() {
-          _scaleFactor = scaleFactor;
-          _offset = offset;
-        });
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return ChartViewer(
+          initialScale: 1.0,
+          onScale: (double scaleFactor, Offset offset) {
+            setState(() {
+              _scaleFactor = scaleFactor;
+              _offset = offset;
+            });
+          },
+          child: ClipRect(
+            child: CustomPaint(
+              size: Size(constraints.maxWidth, constraints.maxHeight),
+              painter: LinePlotPainter(
+                scaleFactor: _scaleFactor,
+                axes: widget.axes,
+                animationProgress: _progressAnimation.value,
+                offset: _offset,
+                data: widget.data,
+              ),
+              foregroundPainter: PlotFrameworkPainter(
+                scaleFactor: _scaleFactor,
+                axes: widget.axes,
+                offset: _offset,
+              ),
+            ),
+          ),
+        );
       },
-      child: ClipRect(
-        child: CustomPaint(
-          painter: LinePlotPainter(
-            scaleFactor: _scaleFactor,
-            axes: widget.axes,
-            animationProgress: _progressAnimation.value,
-            offset: _offset,
-            data: widget.data,
-          ),
-          foregroundPainter: PlotFrameworkPainter(
-            scaleFactor: _scaleFactor,
-            axes: widget.axes,
-            offset: _offset,
-          ),
-        ),
-      ),
     );
   }
 }
@@ -113,13 +118,10 @@ class LinePlotPainter extends CustomPainter {
     const double axesPadding = 20.0;
     const int points = 300;
 
-    final xAxesNumberTicks = axes.numberOfTicksOnX;
-    final yAxesNumberTicks = axes.numberOfTicksOnY;
     final xAxesRange = axes.xLimits.translate(-offset.dx).scale(scaleFactor);
     final yAxesRange = axes.yLimits.translate(offset.dy).scale(scaleFactor);
 
     final height = size.height;
-    final width = size.width;
 
     final paddedWidth = size.width - 2 * internalPadding;
     final paddedHeight = size.height - 2 * internalPadding;

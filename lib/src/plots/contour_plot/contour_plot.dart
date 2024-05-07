@@ -72,19 +72,22 @@ class _ContourPlotState extends State<ContourPlot>
           _offset = offset;
         });
       },
-      child: ClipRect(
-        child: CustomPaint(
-          painter: ContourPlotPainter(
-            scaleFactor: _scaleFactor,
-            axes: widget.axes,
-            animationProgress: _progressAnimation.value,
-            offset: _offset,
-            data: widget.data,
-          ),
-          foregroundPainter: PlotFrameworkPainter(
-            scaleFactor: _scaleFactor,
-            axes: widget.axes,
-            offset: _offset,
+      child: LayoutBuilder(
+        builder: (context, constraints) => ClipRect(
+          child: CustomPaint(
+            size: Size(constraints.maxWidth, constraints.maxHeight),
+            painter: ContourPlotPainter(
+              scaleFactor: _scaleFactor,
+              axes: widget.axes,
+              animationProgress: _progressAnimation.value,
+              offset: _offset,
+              data: widget.data,
+            ),
+            foregroundPainter: PlotFrameworkPainter(
+              scaleFactor: _scaleFactor,
+              axes: widget.axes,
+              offset: _offset,
+            ),
           ),
         ),
       ),
@@ -115,30 +118,16 @@ class ContourPlotPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     const double internalPadding = 50.0;
-    const double axesPadding = 20.0;
     const int points = 200;
-    final colorMap = whiteBlueSquential;
-
-    final xAxesNumberTicks = axes.numberOfTicksOnX;
-    final yAxesNumberTicks = axes.numberOfTicksOnY;
     final xAxesRange = axes.xLimits.translate(offset.dx).scale(scaleFactor);
     final yAxesRange = axes.yLimits.translate(-offset.dy).scale(scaleFactor);
 
-    final height = size.height;
     final width = size.width;
 
     final paddedWidth = size.width - 2 * internalPadding;
     final paddedHeight = size.height - 2 * internalPadding;
 
     const paddedTopLeftCorner = Offset(internalPadding, internalPadding);
-
-    final axesOrigin = Offset(
-      internalPadding + axesPadding,
-      size.height - internalPadding - axesPadding,
-    );
-
-    final axesWidth = paddedWidth - 2 * axesPadding;
-    final axesHeight = paddedHeight - 2 * axesPadding;
 
     // draw a curve
     for (var d in data) {
@@ -175,7 +164,7 @@ class ContourPlotPainter extends CustomPainter {
       for (var i = 0; i < d.nbLines; i++) {
         final isoValue = (maxValue - minValue) / d.nbLines * i;
         contourPainter.color = blueGreenRedSquential
-            .getColor((isoValue + minValue) / (maxValue + minValue));
+            .getColor((isoValue + minValue) / (maxValue - minValue));
 
         final binaryImage = Uint8List(values.length);
 

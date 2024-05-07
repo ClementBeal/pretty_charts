@@ -71,20 +71,23 @@ class _BarPlotState extends State<BarPlot> with SingleTickerProviderStateMixin {
           _offset = offset;
         });
       },
-      child: ClipRect(
-        child: CustomPaint(
-          painter: BarPlotPainter(
-            scaleFactor: _scaleFactor,
-            axes: widget.axes,
-            animationProgress: _progressAnimation.value,
-            offset: _offset,
-            data: widget.data,
-            colorMap: widget.colorMap ?? pastel1,
-          ),
-          foregroundPainter: PlotFrameworkPainter(
-            scaleFactor: _scaleFactor,
-            axes: widget.axes,
-            offset: _offset,
+      child: LayoutBuilder(
+        builder: (context, constraints) => ClipRect(
+          child: CustomPaint(
+            size: Size(constraints.maxWidth, constraints.maxHeight),
+            painter: BarPlotPainter(
+              scaleFactor: _scaleFactor,
+              axes: widget.axes,
+              animationProgress: _progressAnimation.value,
+              offset: _offset,
+              data: widget.data,
+              colorMap: widget.colorMap ?? pastel1,
+            ),
+            foregroundPainter: PlotFrameworkPainter(
+              scaleFactor: _scaleFactor,
+              axes: widget.axes,
+              offset: _offset,
+            ),
           ),
         ),
       ),
@@ -119,14 +122,6 @@ class BarPlotPainter extends CustomPainter {
     colorMap.reset();
     const double internalPadding = 50.0;
     const double axesPadding = 20.0;
-
-    final xAxesNumberTicks = axes.numberOfTicksOnX;
-    final yAxesNumberTicks = axes.numberOfTicksOnY;
-    final xAxesRange = axes.xLimits.translate(offset.dx).scale(scaleFactor);
-    final yAxesRange = axes.yLimits.translate(-offset.dy).scale(scaleFactor);
-
-    final height = size.height;
-    final width = size.width;
 
     final paddedWidth = size.width - 2 * internalPadding;
     final paddedHeight = size.height - 2 * internalPadding;

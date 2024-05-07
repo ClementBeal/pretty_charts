@@ -1,7 +1,4 @@
-import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pretty_charts/pretty_charts.dart';
 import 'package:pretty_charts/src/plots/treemap_chart/scarify_algo.dart';
 import 'package:pretty_charts/src/shared/chart_viewer.dart';
@@ -70,18 +67,20 @@ class _TreeMapChartState extends State<TreeMapChart>
           _offset = offset;
         });
       },
-      child: ClipRect(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return TreemapBuilder(
-              scaleFactor: _scaleFactor,
-              progressAnimation: _progressAnimation,
-              offset: _offset,
-              constraints: constraints,
-              data: widget.data,
-              colorMap: widget.colorMap,
-            );
-          },
+      child: LayoutBuilder(
+        builder: (context, constraints) => ClipRect(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return TreemapBuilder(
+                scaleFactor: _scaleFactor,
+                progressAnimation: _progressAnimation,
+                offset: _offset,
+                constraints: constraints,
+                data: widget.data,
+                colorMap: widget.colorMap,
+              );
+            },
+          ),
         ),
       ),
     );
@@ -154,6 +153,7 @@ class _TreemapBuilderState extends State<TreemapBuilder> {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
+      size: Size(widget.constraints.maxWidth, widget.constraints.maxHeight),
       painter: TreeMapChartPainter(
         scaleFactor: widget.scaleFactor,
         animationProgress: widget.progressAnimation.value,

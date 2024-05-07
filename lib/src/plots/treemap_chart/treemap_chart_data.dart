@@ -1,4 +1,3 @@
-import 'package:pretty_charts/pretty_charts.dart';
 
 class TreeMapChartData {
   final String name;

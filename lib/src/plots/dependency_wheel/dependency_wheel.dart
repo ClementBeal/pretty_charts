@@ -72,15 +72,19 @@ class _DependencyWheelChartState extends State<DependencyWheelChart>
           _offset = offset;
         });
       },
-      child: ClipRect(
-        child: CustomPaint(
-          painter: DependencyWheelChartPainter(
+      child: LayoutBuilder(
+        builder: (context, constraints) => ClipRect(
+          child: CustomPaint(
+            size: Size(constraints.maxWidth, constraints.maxHeight),
+            painter: DependencyWheelChartPainter(
               animationProgress: _progressAnimation.value,
               scaleFactor: _scaleFactor,
               offset: _offset,
               data: widget.data,
               colorMap: widget.colorMap ?? pastel17,
-              sectionSpacing: widget.sectionSpacing),
+              sectionSpacing: widget.sectionSpacing,
+            ),
+          ),
         ),
       ),
     );
@@ -190,7 +194,7 @@ class DependencyWheelChartPainter extends CustomPainter {
       canvas.drawArc(
         rect,
         angle,
-        sectionAngle,
+        sectionAngle * animationProgress,
         false,
         sectionPainter,
       );
@@ -228,10 +232,12 @@ class DependencyWheelChartPainter extends CustomPainter {
       final endAngleSource = startAngleSource +
           d.value /
               fromValue *
+              animationProgress *
               (endSectionDestination[from]! - startSectionDestination[from]!);
       final endAngleDestination = startAngleDestination +
           d.value /
               toValue *
+              animationProgress *
               (endSectionDestination[to]! - startSectionDestination[to]!);
 
       final path = Path();

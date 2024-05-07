@@ -11,15 +11,15 @@ class DotPlotScreen extends StatelessWidget {
       body: ListView(
         children: [
           ListTile(
-            title: Text("Basic dot plot"),
-            subtitle: Text(""),
+            title: const Text("Basic dot plot"),
+            subtitle: const Text(""),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => BasicDotPlotScreen(),
+                builder: (context) => const BasicDotPlotScreen(),
               ));
             },
           ),
-          Divider(),
+          const Divider(),
         ],
       ),
     );

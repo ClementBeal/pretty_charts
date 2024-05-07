@@ -8,22 +8,22 @@ class BubbleChartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Bubble charts"),
+        title: const Text("Bubble charts"),
       ),
       body: ListView(
         children: [
           ListTile(
-            title: Text("Basic bubble charts"),
-            subtitle: Text(""),
+            title: const Text("Basic bubble charts"),
+            subtitle: const Text(""),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => BasicBubbleChart(),
+                  builder: (context) => const BasicBubbleChart(),
                 ),
               );
             },
           ),
-          Divider(),
+          const Divider(),
         ],
       ),
     );

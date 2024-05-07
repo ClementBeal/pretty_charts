@@ -71,20 +71,23 @@ class _BubbleChartState extends State<BubbleChart>
           _offset = offset;
         });
       },
-      child: ClipRect(
-        child: CustomPaint(
-          painter: BubbleChartPainter(
-            scaleFactor: _scaleFactor,
-            animationProgress: _progressAnimation.value,
-            offset: _offset,
-            data: widget.data,
-            colorMap: widget.colorMap ?? pastel1,
-            axes: widget.axes,
-          ),
-          foregroundPainter: PlotFrameworkPainter(
-            axes: widget.axes,
-            scaleFactor: _scaleFactor,
-            offset: _offset,
+      child: LayoutBuilder(
+        builder: (context, constraints) => ClipRect(
+          child: CustomPaint(
+            size: Size(constraints.maxWidth, constraints.maxHeight),
+            painter: BubbleChartPainter(
+              scaleFactor: _scaleFactor,
+              animationProgress: _progressAnimation.value,
+              offset: _offset,
+              data: widget.data,
+              colorMap: widget.colorMap ?? pastel1,
+              axes: widget.axes,
+            ),
+            foregroundPainter: PlotFrameworkPainter(
+              axes: widget.axes,
+              scaleFactor: _scaleFactor,
+              offset: _offset,
+            ),
           ),
         ),
       ),

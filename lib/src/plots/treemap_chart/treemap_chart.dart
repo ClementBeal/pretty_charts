@@ -16,6 +16,7 @@ class TreeMapChart extends StatefulWidget {
     this.animationDuration = Durations.extralong1,
     this.animationCurve = Curves.easeInOut,
     this.onGenerateSelectedLabel,
+    this.interactions = ChartInteraction.values,
   });
 
   final List<TreeMapChartData> data;
@@ -23,6 +24,7 @@ class TreeMapChart extends StatefulWidget {
   final Curve animationCurve;
   final ColorMap? colorMap;
   final String Function(TreeMapChartData data)? onGenerateSelectedLabel;
+  final List<ChartInteraction> interactions;
 
   @override
   State<TreeMapChart> createState() => _TreeMapChartState();
@@ -37,6 +39,7 @@ class _TreeMapChartState extends State<TreeMapChart> {
   Widget build(BuildContext context) {
     return ChartViewer(
       initialScale: 1.0,
+      interactions: widget.interactions,
       onScale: (double scaleFactor, Offset offset) {
         setState(() {
           _scaleFactor = scaleFactor;

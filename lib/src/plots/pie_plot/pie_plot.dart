@@ -5,8 +5,6 @@ import 'package:pretty_charts/src/shared/color_maps/color_map.dart';
 
 import 'dart:math' as math;
 
-import 'package:pretty_charts/src/shared/polygon_centroid.dart';
-
 class PiePlot extends StatefulWidget {
   const PiePlot({
     super.key,
@@ -370,6 +368,15 @@ class PiePlotPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    if (oldDelegate is PiePlotPainter) {
+      // Check if any of the parameters that affect the appearance have changed
+      return oldDelegate.scaleFactor != scaleFactor ||
+          oldDelegate.offset != offset ||
+          oldDelegate.tapOffset != tapOffset ||
+          oldDelegate.previousTapOffset != previousTapOffset ||
+          oldDelegate.animationProgress != animationProgress ||
+          oldDelegate.selectedProgress != selectedProgress;
+    }
     return true;
   }
 }

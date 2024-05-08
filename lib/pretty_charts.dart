@@ -40,3 +40,6 @@ export 'src/plots/dependency_wheel/dependency_wheel.dart'
     show DependencyWheelChart;
 export 'src/plots/dependency_wheel/dependency_wheel_data.dart'
     show DependencyWheelChartData;
+
+export 'src/layouts/grid_plot_layout.dart' show GridPlotLayout;
+export 'src/shared/chart_viewer.dart' show ChartInteraction;

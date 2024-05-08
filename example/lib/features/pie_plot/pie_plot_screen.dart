@@ -1,5 +1,6 @@
 import 'package:example/features/pie_plot/screens/basic_pie_plot_screen.dart';
 import 'package:example/features/pie_plot/screens/country_population_pie_plot_screen.dart';
+import 'package:example/features/pie_plot/screens/donut_plot_screen.dart';
 import 'package:flutter/material.dart';
 
 class PiePlotScreen extends StatelessWidget {
@@ -30,6 +31,18 @@ class PiePlotScreen extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => const CountryPopulationPiePlotScreen(),
+                ),
+              );
+            },
+          ),
+          const Divider(),
+          ListTile(
+            title: const Text("Donut plot"),
+            subtitle: const Text("With a hole"),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const DonutPlotScreen(),
                 ),
               );
             },

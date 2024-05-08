@@ -5,6 +5,8 @@ import 'package:pretty_charts/src/shared/color_maps/color_map.dart';
 
 import 'dart:math' as math;
 
+import 'package:pretty_charts/src/shared/polygon_centroid.dart';
+
 class PiePlot extends StatefulWidget {
   const PiePlot({
     super.key,
@@ -25,12 +27,16 @@ class PiePlot extends StatefulWidget {
   State<PiePlot> createState() => _PiePlotState();
 }
 
-class _PiePlotState extends State<PiePlot> with SingleTickerProviderStateMixin {
+class _PiePlotState extends State<PiePlot> with TickerProviderStateMixin {
   late AnimationController _controller;
+  late AnimationController _selectedController;
   late Animation<double> _progressAnimation;
+  late Animation<double> _selectedAnimation;
 
   double _scaleFactor = 1.0;
   Offset _offset = Offset.zero;
+  Offset _previousTapOffset = Offset.zero;
+  Offset _tapOffset = Offset.zero;
 
   @override
   void initState() {
@@ -43,9 +49,23 @@ class _PiePlotState extends State<PiePlot> with SingleTickerProviderStateMixin {
         setState(() {});
       });
 
+    _selectedController = AnimationController(
+      vsync: this,
+      duration: Durations.medium1,
+    )..addListener(() {
+        setState(() {});
+      });
+
     _progressAnimation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
         parent: _controller,
+        curve: widget.animationCurve,
+      ),
+    );
+
+    _selectedAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(
+        parent: _selectedController,
         curve: widget.animationCurve,
       ),
     );
@@ -55,6 +75,7 @@ class _PiePlotState extends State<PiePlot> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
+    _selectedController.dispose();
     _controller.dispose();
     super.dispose();
   }
@@ -69,6 +90,14 @@ class _PiePlotState extends State<PiePlot> with SingleTickerProviderStateMixin {
           _offset = offset;
         });
       },
+      onTapUp: (details) {
+        _selectedController.forward(from: 0);
+
+        setState(() {
+          _previousTapOffset = _tapOffset;
+          _tapOffset = details.localPosition;
+        });
+      },
       child: LayoutBuilder(
         builder: (context, constraints) => ClipRect(
           child: CustomPaint(
@@ -77,9 +106,12 @@ class _PiePlotState extends State<PiePlot> with SingleTickerProviderStateMixin {
               config: widget.config,
               scaleFactor: _scaleFactor,
               animationProgress: _progressAnimation.value,
+              selectedProgress: _selectedAnimation.value,
               offset: _offset,
               data: widget.data,
               colorMap: widget.colorMap ?? pastel1,
+              tapOffset: _tapOffset,
+              previousTapOffset: _previousTapOffset,
             ),
           ),
         ),
@@ -97,6 +129,9 @@ class PiePlotPainter extends CustomPainter {
     required this.data,
     required this.colorMap,
     required this.config,
+    required this.tapOffset,
+    required this.previousTapOffset,
+    required this.selectedProgress,
   });
 
   final double scaleFactor;
@@ -105,10 +140,14 @@ class PiePlotPainter extends CustomPainter {
   final ColorMap colorMap;
   final PiePlotConfig config;
 
+  final Offset tapOffset;
+  final Offset previousTapOffset;
+
   /// progress value of the animation
   /// 0 is the start || 1 is the end
   /// interval of value : [0, 1]
   final double animationProgress;
+  final double selectedProgress;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -148,7 +187,7 @@ class PiePlotPainter extends CustomPainter {
     var currentAngle = config.startAngle;
 
     for (var (i, e) in data.indexed) {
-      final path = Path();
+      var path = Path();
       final normalizedValue = e.value / valueSum;
       final angle = 2 * math.pi * normalizedValue * animationProgress;
 
@@ -197,12 +236,6 @@ class PiePlotPainter extends CustomPainter {
       );
       path.close();
 
-      canvas.drawPath(path, curvePainterBackGround);
-
-      if (config.drawBorders) {
-        canvas.drawPath(path, curvePainterBorder);
-      }
-
       // how to find the arc center
       // we get the X and Y of the line at the half angle -> currentAngle + angle / 2
       // multiply by the pie width
@@ -224,6 +257,60 @@ class PiePlotPainter extends CustomPainter {
               ) +
               canvasCenter) /
           2;
+
+      var a = path.contains(previousTapOffset);
+      var b = path.contains(tapOffset);
+
+      if (a) {
+        final newArcCenter = (Offset(
+                  canvasCenter.dx +
+                      math.cos(currentAngle + angle / 2) *
+                          pieWidth *
+                          (1 + 0.2 * (1 - selectedProgress)) *
+                          (1 + config.holeRadiusRatio) /
+                          2,
+                  canvasCenter.dy +
+                      math.sin(currentAngle + angle / 2) *
+                          pieHeight *
+                          (1 + 0.2 * (1 - selectedProgress)) *
+                          (1 + config.holeRadiusRatio) /
+                          2,
+                ) +
+                canvasCenter) /
+            2;
+        final diff = newArcCenter - arcCenter;
+        final transformationMatrix =
+            Matrix4.translationValues(diff.dx, diff.dy, 0);
+        path = path.transform(transformationMatrix.storage);
+      }
+      if (b && !a) {
+        final newArcCenter = (Offset(
+                  canvasCenter.dx +
+                      math.cos(currentAngle + angle / 2) *
+                          pieWidth *
+                          (1 + 0.2 * selectedProgress) *
+                          (1 + config.holeRadiusRatio) /
+                          2,
+                  canvasCenter.dy +
+                      math.sin(currentAngle + angle / 2) *
+                          pieHeight *
+                          (1 + 0.2 * selectedProgress) *
+                          (1 + config.holeRadiusRatio) /
+                          2,
+                ) +
+                canvasCenter) /
+            2;
+        final diff = newArcCenter - arcCenter;
+        final transformationMatrix =
+            Matrix4.translationValues(diff.dx, diff.dy, 0);
+        path = path.transform(transformationMatrix.storage);
+      }
+
+      canvas.drawPath(path, curvePainterBackGround);
+
+      if (config.drawBorders) {
+        canvas.drawPath(path, curvePainterBorder);
+      }
 
       if (config.showLabels) {
         final String text;

@@ -126,6 +126,7 @@ class DependencyWheelChartPainter extends CustomPainter {
     final center = Offset(size.width / 2, size.height / 2);
 
     final circleRadius = size.shortestSide / 2 - internalPadding;
+    final insideCircleRadius = circleRadius - sectionPainter.strokeWidth / 2;
 
     // we calculate the total value for each section
     for (var element in data) {
@@ -175,6 +176,11 @@ class DependencyWheelChartPainter extends CustomPainter {
       height: size.shortestSide - internalPadding * 2,
     );
 
+    final insideRect = Rect.fromCircle(
+      center: Offset(size.width / 2, size.height / 2),
+      radius: insideCircleRadius,
+    );
+
     for (final a in totalPerDestination.entries) {
       textPainter.text = TextSpan(
         text: a.key,
@@ -203,10 +209,11 @@ class DependencyWheelChartPainter extends CustomPainter {
       textPainter.paint(
         canvas,
         translateIntoCartesian(
-          center,
-          circleRadius * 1.1,
-          angle + sectionAngle / 2,
-        ),
+              center,
+              circleRadius + 24,
+              angle + sectionAngle / 2,
+            ) -
+            Offset(textPainter.width / 2, textPainter.height / 2),
       );
 
       angle += sectionAngle + totalPaddingAngle;
@@ -243,15 +250,15 @@ class DependencyWheelChartPainter extends CustomPainter {
       final path = Path();
 
       final sourcePointStart =
-          translateIntoCartesian(center, circleRadius, startAngleSource);
-      final destinationPointStart =
-          translateIntoCartesian(center, circleRadius, startAngleDestination);
+          translateIntoCartesian(center, insideCircleRadius, startAngleSource);
+      final destinationPointStart = translateIntoCartesian(
+          center, insideCircleRadius, startAngleDestination);
 
       // we moove at the begining of the first section
       path.moveTo(sourcePointStart.dx, sourcePointStart.dy);
       // we draw an arc to the end of the section according to the value of the link (maybe 15%)
-      path.arcTo(
-          rect, startAngleSource, endAngleSource - startAngleSource, true);
+      path.arcTo(insideRect, startAngleSource,
+          endAngleSource - startAngleSource, true);
       // draw a curve between the end of the source section to the start of the destination section
       path.cubicTo(
         center.dx,
@@ -262,7 +269,7 @@ class DependencyWheelChartPainter extends CustomPainter {
         destinationPointStart.dy,
       );
       // draw an arc between the begining and the end of the section accoding to the value of the link
-      path.arcTo(rect, startAngleDestination,
+      path.arcTo(insideRect, startAngleDestination,
           endAngleDestination - startAngleDestination, true);
 
       // draw a curve to the start of the first section

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pretty_charts/pretty_charts.dart';
 
 class CategoryTreeMapChartScreen extends StatelessWidget {
@@ -10,6 +11,11 @@ class CategoryTreeMapChartScreen extends StatelessWidget {
       appBar: AppBar(),
       body: SizedBox.expand(
         child: TreeMapChart(
+          onGenerateSelectedLabel: (data) {
+            final valueInMillions =
+                NumberFormat.compactLong().format(data.value);
+            return "${data.name} : $valueInMillions";
+          },
           data: [
             TreeMapChartData.category(
               name: 'Asia',

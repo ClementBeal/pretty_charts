@@ -7,9 +7,26 @@ import 'package:pretty_charts/pretty_charts.dart';
 class TreeMapSection {
   final Rect rect;
   final TreeMapChartData data;
+  final bool hasBorder;
   Color? color;
 
-  TreeMapSection({required this.rect, required this.data, this.color});
+  TreeMapSection({
+    required this.rect,
+    required this.data,
+    this.color,
+    required this.hasBorder,
+  });
+
+  TreeMapSection copyWith({
+    bool? hasBorder,
+  }) {
+    return TreeMapSection(
+      data: data,
+      rect: rect,
+      color: color,
+      hasBorder: hasBorder ?? this.hasBorder,
+    );
+  }
 
   @override
   String toString() {
@@ -26,13 +43,11 @@ class ScarifyTreeMap {
 
     return data
         .map(
-          (e) => TreeMapChartData(
-            name: e.name,
-            value: e.value / totalSize * totalArea,
-            children: e.children,
+          (e) => e.normalizeValue(
+            e.value / totalSize * totalArea,
           ),
         )
-        .sorted((a, b) => b.value.compareTo(a.value))
+        .sorted((a, b) => b.normalizedValue!.compareTo(a.normalizedValue!))
         .toList();
   }
 
@@ -62,7 +77,9 @@ class ScarifyTreeMap {
         final normalizedChildrenValues =
             ScarifyTreeMap.normalizeValues(d.children!, current[j].rect);
         final rects = scarify(normalizedChildrenValues, current[j].rect);
-        current.insertAll(j + 1, rects);
+
+        current.insertAll(
+            j + 1, rects.map((e) => e.copyWith(hasBorder: true)).toList());
         j += d.children!.length;
       }
       j++;
@@ -77,7 +94,9 @@ class ScarifyTreeMap {
     if (rect.width > rect.height) {
       // stack in col
       final totalArea = data.fold(
-          0.0, (previousValue, element) => previousValue + element.value);
+          0.0,
+          (previousValue, element) =>
+              previousValue + (element.normalizedValue ?? 0.0));
       final height = rect.height;
       final width = totalArea / height;
 
@@ -86,17 +105,20 @@ class ScarifyTreeMap {
       for (final d in data) {
         rects.add(
           TreeMapSection(
-            rect: Rect.fromLTWH(
-                rect.left, y, width, d.value / totalArea * height),
+            hasBorder: false,
+            rect: Rect.fromLTWH(rect.left, y, width,
+                (d.normalizedValue ?? 0.0) / totalArea * height),
             data: d,
           ),
         );
-        y += d.value / totalArea * height;
+        y += (d.normalizedValue ?? 0.0) / totalArea * height;
       }
     } else {
       // stack in row
       final totalArea = data.fold(
-          0.0, (previousValue, element) => previousValue + element.value);
+          0.0,
+          (previousValue, element) =>
+              previousValue + (element.normalizedValue ?? 0.0));
       final width = rect.width;
       final height = totalArea / width;
 
@@ -105,16 +127,17 @@ class ScarifyTreeMap {
       for (final d in data) {
         rects.add(
           TreeMapSection(
+            hasBorder: false,
             rect: Rect.fromLTWH(
               x,
               rect.top,
-              d.value / totalArea * width,
+              (d.normalizedValue ?? 0.0) / totalArea * width,
               height,
             ),
             data: d,
           ),
         );
-        x += d.value / totalArea * width;
+        x += (d.normalizedValue ?? 0.0) / totalArea * width;
       }
     }
 

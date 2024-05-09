@@ -15,6 +15,9 @@ class LifeExpentancyAmericaScreen extends StatelessWidget {
           yLimits: AxesLimit(60, 90),
           numberOfTicksOnX: 3,
           numberOfTicksOnY: 3,
+          xLabelsBuilder: (x) {
+            return x.toStringAsFixed(0);
+          },
         ),
         data: [
           LinePlotData(x: [

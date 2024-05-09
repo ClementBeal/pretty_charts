@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:example/features/bubble_chart/bubble_chart_screen.dart';
 import 'package:example/features/grid_layout/grid_layout_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:example/features/bar_plot/bar_plot.dart';
@@ -347,7 +348,7 @@ class BasicPlotGrid extends StatelessWidget {
               showGrid: true,
             ),
           ),
-          destinationPage: const ScatterPlotScreen(),
+          destinationPage: const BubbleChartScreen(),
         ),
       ],
     );

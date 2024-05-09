@@ -1,6 +1,6 @@
 > [!IMPORTANT]
-> It's still in progress. I'm trying to draw the charts that are not provided by the other packages first. Then I'll add the interaction. 
-The API might change because it's currently experiments.
+> It's still in progress. I'm trying to draw the charts that are not provided by the other packages first. Then I'll add the interaction.
+> The API might change because it's currently experiments.
 
 # Pretty Charts
 
@@ -26,6 +26,22 @@ flutter run
 
 ## Available charts
 
+| Line Chart                      | Bar Plot                      | Pie Plot                 |
+| ------------------------------- | ----------------------------- | ------------------------ |
+| ![](screenshots/line_chart.png) | ![](screenshots/bar_plot.png) | ![](screenshots/pie.png) |
+
+| Scatter Plot                 | Bubble Plot                 |     |
+| ---------------------------- | --------------------------- | --- |
+| ![](screenshots/scatter.png) | ![](screenshots/bubble.png) |     |
+
+| Treemap Chart                | Dependency Wheel                | Ternary Plot                      |
+| ---------------------------- | ------------------------------- | --------------------------------- |
+| ![](screenshots/treemap.png) | ![](screenshots/dependency.png) | ![](screenshots/ternary_plot.png) |
+
+| Dot Plot                      | Contour Plot                      |     |
+| ----------------------------- | --------------------------------- | --- |
+| ![](screenshots/dot_plot.png) | ![](screenshots/contour_plot.png) |     |
+
 | Plots            | Implemented |
 | ---------------- | ----------- |
 | Line             | ✅          |
@@ -38,4 +54,3 @@ flutter run
 | Treemap Chart    | ✅          |
 | Dot Chart        | ✅          |
 | Contour Plot     | ✅          |
-

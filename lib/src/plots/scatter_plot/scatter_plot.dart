@@ -128,8 +128,10 @@ class ScatterPlotPainter extends CustomPainter {
     final axesOrigin = Offset(internalPadding, size.height - internalPadding);
     final plotOrigin = axesOrigin + const Offset(axesPadding, -axesPadding);
 
-    final xAxesRange = axes.xLimits.translate(offset.dx).scale(scaleFactor);
-    final yAxesRange = axes.yLimits.translate(-offset.dy).scale(scaleFactor);
+    final xAxesRange =
+        axes.xLimits.translate(-offset.dx / 100).scale(scaleFactor);
+    final yAxesRange =
+        axes.yLimits.translate(offset.dy / 100).scale(scaleFactor);
 
     final axesWidth = size.width - 2 * (internalPadding + axesPadding);
     final axesHeight = size.height - 2 * (internalPadding + axesPadding);
@@ -145,12 +147,12 @@ class ScatterPlotPainter extends CustomPainter {
       for (var i = 0; i < d.x.length; i++) {
         points[i * 2] = plotOrigin.dx +
             axesWidth *
-                (offset.dx + d.x[i]) /
+                (offset.dx / 100 + d.x[i]) /
                 xAxesRange.getDiff() *
                 scaleFactor;
         points[i * 2 + 1] = plotOrigin.dy -
             axesHeight *
-                (-offset.dy + d.y[i]) /
+                (-offset.dy / 100 + d.y[i]) /
                 yAxesRange.getDiff() *
                 scaleFactor;
       }

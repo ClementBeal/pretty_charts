@@ -67,6 +67,11 @@ class AxesLimit {
   AxesLimit translate(double value) {
     return AxesLimit(minLimit + value, maxLimit + value);
   }
+
+  @override
+  String toString() {
+    return "$minLimit $maxLimit";
+  }
 }
 
 enum AxesBorder {

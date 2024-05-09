@@ -26,12 +26,14 @@ class DotPlot extends StatefulWidget {
   State<DotPlot> createState() => _DotPlotState();
 }
 
-class _DotPlotState extends State<DotPlot> with SingleTickerProviderStateMixin {
+class _DotPlotState extends State<DotPlot> with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _progressAnimation;
 
   double _scaleFactor = 1.0;
   Offset _offset = Offset.zero;
+
+  Offset _tappedPoint = Offset.zero;
 
   @override
   void initState() {
@@ -70,6 +72,11 @@ class _DotPlotState extends State<DotPlot> with SingleTickerProviderStateMixin {
           _offset = offset;
         });
       },
+      onTapUp: (details) {
+        setState(() {
+          _tappedPoint = details.localPosition;
+        });
+      },
       child: LayoutBuilder(
         builder: (context, constraints) => ClipRect(
           child: CustomPaint(
@@ -81,6 +88,7 @@ class _DotPlotState extends State<DotPlot> with SingleTickerProviderStateMixin {
               data: widget.data,
               colorMap: widget.colorMap ?? pastel1,
               axes: widget.axes,
+              mousePosition: _tappedPoint,
             ),
           ),
         ),
@@ -98,6 +106,7 @@ class DotPlotPainter extends CustomPainter {
     required this.data,
     required this.colorMap,
     required this.axes,
+    this.mousePosition,
   });
 
   final double scaleFactor;
@@ -105,6 +114,7 @@ class DotPlotPainter extends CustomPainter {
   final List<DotPlotData> data;
   final ColorMap colorMap;
   final CartesianAxes axes;
+  final Offset? mousePosition;
 
   /// progress value of the animation
   /// 0 is the start || 1 is the end
@@ -113,6 +123,7 @@ class DotPlotPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    colorMap.reset();
     const textStyle = TextStyle(
       color: Colors.black,
       fontSize: 18,
@@ -193,6 +204,7 @@ class DotPlotPainter extends CustomPainter {
     }
 
     double height = 0;
+    var hasSelectedPoint = false;
 
     for (var (_, d) in data.indexed) {
       textPainter.text = TextSpan(
@@ -222,24 +234,31 @@ class DotPlotPainter extends CustomPainter {
       for (var (id, value) in d.data.indexed) {
         final normalizedValue = (value - minValue) / (maxValue - minValue);
         borderPointPainter.color = colors[id];
-        backgroundPointPainter.color = colors[id];
+        backgroundPointPainter.color = colors[id].withOpacity(0.3);
+
+        var offset = Offset(
+          maxTextWidth + normalizedValue * barMaxWidth,
+          height + textPainter.height / 2,
+        );
+
+        final isSelected = (mousePosition != null && !hasSelectedPoint)
+            ? (mousePosition! - offset).distance < 18
+            : false;
 
         canvas.drawCircle(
-          Offset(
-            maxTextWidth + normalizedValue * barMaxWidth,
-            height + textPainter.height / 2,
-          ),
-          4 * animationProgress,
+          offset,
+          ((isSelected) ? 12 : 6) * animationProgress,
           backgroundPointPainter,
         );
         canvas.drawCircle(
-          Offset(
-            maxTextWidth + normalizedValue * barMaxWidth,
-            height + textPainter.height / 2,
-          ),
-          4 * animationProgress,
+          offset,
+          ((isSelected) ? 12 : 6) * animationProgress,
           borderPointPainter,
         );
+
+        if (isSelected) {
+          hasSelectedPoint = true;
+        }
       }
       height += textPainter.height;
     }

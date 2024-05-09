@@ -1,5 +1,6 @@
 import 'package:example/features/line_plot/screens/animated_line_plot_screen.dart';
 import 'package:example/features/line_plot/screens/dashed_line_plot_screen.dart';
+import 'package:example/features/line_plot/screens/life_expentancy_america_screen.dart';
 import 'package:example/features/line_plot/screens/multiple_line_plots_screen.dart';
 import 'package:example/features/line_plot/screens/simple_line_plot_screen.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +58,18 @@ class LinePlotScreen extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => const AnimatedLinePlotScreen(),
+                ),
+              );
+            },
+          ),
+          const Divider(),
+          ListTile(
+            title: const Text("Life expentancy in America"),
+            subtitle: const Text("Multiple line curves"),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const LifeExpentancyAmericaScreen(),
                 ),
               );
             },

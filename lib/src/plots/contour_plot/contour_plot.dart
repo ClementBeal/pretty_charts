@@ -3,6 +3,8 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:pretty_charts/src/axes/axes.dart';
 import 'package:pretty_charts/src/axes/plot_framework.dart';
 import 'package:pretty_charts/src/plots/contour_plot/contour_plot_data.dart';
@@ -118,9 +120,11 @@ class ContourPlotPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     const double internalPadding = 50.0;
-    const int points = 200;
-    final xAxesRange = axes.xLimits.translate(offset.dx).scale(scaleFactor);
-    final yAxesRange = axes.yLimits.translate(-offset.dy).scale(scaleFactor);
+    const int points = 300;
+    final xAxesRange =
+        axes.xLimits.translate(-offset.dx / 100).scale(scaleFactor);
+    final yAxesRange =
+        axes.yLimits.translate(-offset.dy / 100).scale(scaleFactor);
 
     final width = size.width;
 
@@ -133,6 +137,7 @@ class ContourPlotPainter extends CustomPainter {
     for (var d in data) {
       final contourPainter = Paint()
         ..color = Colors.green
+        ..style = PaintingStyle.stroke
         ..strokeWidth = 1.2;
 
       final xSpacing = xAxesRange.getDiff() / points;
@@ -162,7 +167,7 @@ class ContourPlotPainter extends CustomPainter {
       }
 
       for (var i = 0; i < d.nbLines; i++) {
-        final isoValue = (maxValue - minValue) / d.nbLines * i;
+        final isoValue = (maxValue - minValue) / d.nbLines * (i);
         contourPainter.color = blueGreenRedSquential
             .getColor((isoValue + minValue) / (maxValue - minValue));
 
@@ -200,11 +205,15 @@ class ContourPlotPainter extends CustomPainter {
         }
 
         // draw the contour
+        final path = Path();
         for (var i = 0; i < contouringGrid.length; i++) {
+          final v = contouringGrid[i];
+          if (v == 0 && v == 15) {
+            continue;
+          }
           final x = i % lim;
           final y = i ~/ lim;
 
-          final v = contouringGrid[i];
           final o = paddedTopLeftCorner.translate(
               widthCell * (x + 0.5), (heightCell * (0.5 + y)));
 
@@ -214,80 +223,56 @@ class ContourPlotPainter extends CustomPainter {
               break;
             case 1:
             case 14:
-              canvas.drawLine(
-                o.translate(0, halfHeightCell),
-                o.translate(halfWidthCell, heightCell),
-                contourPainter,
-              );
+              path.moveTo(o.dx, o.dy + halfHeightCell);
+              path.relativeLineTo(halfWidthCell, heightCell);
+
               break;
             case 2:
             case 13:
-              canvas.drawLine(
-                o.translate(halfWidthCell, heightCell),
-                o.translate(widthCell, halfHeightCell),
-                contourPainter,
-              );
+              path.moveTo(o.dx + halfWidthCell, o.dy + heightCell);
+              path.relativeLineTo(widthCell, halfHeightCell);
               break;
             case 3:
             case 12:
-              canvas.drawLine(
-                o.translate(0, halfHeightCell),
-                o.translate(widthCell, halfHeightCell),
-                contourPainter,
-              );
+              path.moveTo(o.dx, o.dy + halfHeightCell);
+              path.relativeLineTo(widthCell, halfHeightCell);
               break;
             case 4:
             case 11:
-              canvas.drawLine(
-                o.translate(halfWidthCell, 0),
-                o.translate(widthCell, halfHeightCell),
-                contourPainter,
-              );
+              path.moveTo(o.dx + halfWidthCell, o.dy);
+              path.relativeLineTo(widthCell, halfHeightCell);
               break;
             case 5:
-              canvas.drawLine(
-                o.translate(0, halfHeightCell),
-                o.translate(halfWidthCell, 0),
-                contourPainter,
-              );
-              canvas.drawLine(
-                o.translate(halfWidthCell, heightCell),
-                o.translate(widthCell, halfHeightCell),
-                contourPainter,
-              );
+              path.moveTo(o.dx, o.dy + halfHeightCell);
+              path.relativeLineTo(halfWidthCell, 0);
+
+              path.moveTo(o.dx + halfWidthCell, o.dy + heightCell);
+              path.relativeLineTo(widthCell, halfHeightCell);
               break;
             case 6:
             case 9:
-              canvas.drawLine(
-                o.translate(halfWidthCell, 0),
-                o.translate(halfWidthCell, heightCell),
-                contourPainter,
-              );
+              path.moveTo(o.dx + halfWidthCell, o.dy);
+              path.relativeLineTo(halfWidthCell, heightCell);
               break;
             case 7:
             case 8:
-              canvas.drawLine(
-                o.translate(0, halfHeightCell),
-                o.translate(halfWidthCell, 0),
-                contourPainter,
-              );
+              path.moveTo(o.dx, o.dy + halfHeightCell);
+              path.relativeLineTo(halfWidthCell, 0);
               break;
             case 10:
-              canvas.drawLine(
-                o.translate(0, halfHeightCell),
-                o.translate(halfWidthCell, heightCell),
-                contourPainter,
-              );
-              canvas.drawLine(
-                o.translate(halfWidthCell, 0),
-                o.translate(widthCell, halfHeightCell),
-                contourPainter,
-              );
+              path.moveTo(o.dx, o.dy + halfHeightCell);
+              path.relativeLineTo(halfWidthCell, heightCell);
+
+              path.moveTo(o.dx + halfWidthCell, o.dy);
+              path.relativeLineTo(widthCell, halfHeightCell);
+
               break;
             default:
               break;
           }
         }
+
+        canvas.drawPath(path, contourPainter);
       }
 
       drawColorMap(canvas, Offset(width - 30, internalPadding), paddedHeight,

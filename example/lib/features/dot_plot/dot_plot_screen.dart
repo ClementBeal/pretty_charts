@@ -1,6 +1,8 @@
-import 'package:example/features/dot_plot/screens/basic_dot_plot_screen.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:example/core/config/router/app_router.dart';
 import 'package:flutter/material.dart';
 
+@RoutePage()
 class DotPlotScreen extends StatelessWidget {
   const DotPlotScreen({super.key});
 
@@ -14,9 +16,7 @@ class DotPlotScreen extends StatelessWidget {
             title: const Text("Basic dot plot"),
             subtitle: const Text(""),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const BasicDotPlotScreen(),
-              ));
+              context.pushRoute(const BasicDotPlotRoute());
             },
           ),
           const Divider(),

@@ -1,6 +1,8 @@
-import 'package:example/features/bubble_chart/screens/basic_bubble_chart_screen.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:example/core/config/router/app_router.dart';
 import 'package:flutter/material.dart';
 
+@RoutePage()
 class BubbleChartScreen extends StatelessWidget {
   const BubbleChartScreen({super.key});
 
@@ -16,10 +18,8 @@ class BubbleChartScreen extends StatelessWidget {
             title: const Text("Basic bubble charts"),
             subtitle: const Text(""),
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const BasicBubbleChart(),
-                ),
+              context.pushRoute(
+                const BasicBubbleChartRoute(),
               );
             },
           ),

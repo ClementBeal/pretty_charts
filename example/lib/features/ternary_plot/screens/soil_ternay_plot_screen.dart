@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_charts/pretty_charts.dart';
 
 // https://gist.github.com/davenquinn/988167471993bc2ece29
+@RoutePage()
 class SoilTernaryPlotScreen extends StatelessWidget {
   const SoilTernaryPlotScreen({super.key});
 

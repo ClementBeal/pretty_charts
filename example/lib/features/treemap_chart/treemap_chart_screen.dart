@@ -1,7 +1,8 @@
-import 'package:example/features/treemap_chart/screens/basic_treemap_chart_screen.dart';
-import 'package:example/features/treemap_chart/screens/category_treemap_chart_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:example/core/config/router/app_router.dart';
 
+@RoutePage()
 class TreeMapChartScreen extends StatelessWidget {
   const TreeMapChartScreen({super.key});
 
@@ -15,11 +16,7 @@ class TreeMapChartScreen extends StatelessWidget {
             title: const Text("Basic Treemap chart"),
             subtitle: const Text(""),
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const BasicTreeMapChartScreen(),
-                ),
-              );
+             context.pushRoute(const BasicTreeMapChartRoute());
             },
           ),
           const Divider(),
@@ -27,11 +24,7 @@ class TreeMapChartScreen extends StatelessWidget {
             title: const Text("Category Treemap chart"),
             subtitle: const Text(""),
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const CategoryTreeMapChartScreen(),
-                ),
-              );
+              context.pushRoute(const CategoryTreeMapChartRoute());
             },
           ),
           const Divider(),

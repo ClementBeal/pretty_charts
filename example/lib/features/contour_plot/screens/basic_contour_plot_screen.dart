@@ -1,8 +1,10 @@
 import 'dart:math';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_charts/pretty_charts.dart';
 
+@RoutePage()
 class BasicContourPlotScreen extends StatelessWidget {
   const BasicContourPlotScreen({super.key});
 

@@ -1,10 +1,12 @@
 import 'dart:math';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_charts/pretty_charts.dart';
 
-class MassiveScatterPlot extends StatelessWidget {
-  const MassiveScatterPlot({super.key});
+@RoutePage()
+class MassiveScatterPlotScreen extends StatelessWidget {
+  const MassiveScatterPlotScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,10 +1,8 @@
-import 'package:example/features/line_plot/screens/animated_line_plot_screen.dart';
-import 'package:example/features/line_plot/screens/dashed_line_plot_screen.dart';
-import 'package:example/features/line_plot/screens/life_expentancy_america_screen.dart';
-import 'package:example/features/line_plot/screens/multiple_line_plots_screen.dart';
-import 'package:example/features/line_plot/screens/simple_line_plot_screen.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:example/core/config/router/app_router.dart';
 import 'package:flutter/material.dart';
 
+@RoutePage()
 class LinePlotScreen extends StatelessWidget {
   const LinePlotScreen({super.key});
 
@@ -18,11 +16,7 @@ class LinePlotScreen extends StatelessWidget {
             title: const Text("Simple Line Plot"),
             subtitle: const Text("A simple line chart with legends"),
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const SimpleLinePlotScreen(),
-                ),
-              );
+              context.pushRoute(const BasicLinePlotRoute());
             },
           ),
           const Divider(),
@@ -31,11 +25,7 @@ class LinePlotScreen extends StatelessWidget {
             subtitle:
                 const Text("Display different line plots on the same canvas"),
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const MultipleLinePlotsScreen(),
-                ),
-              );
+              context.pushRoute(const MultipleLinePlotsRoute());
             },
           ),
           const Divider(),
@@ -43,11 +33,7 @@ class LinePlotScreen extends StatelessWidget {
             title: const Text("Dashed & Pointed Line Plot"),
             subtitle: const Text("Use dashed & pointed lines"),
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const DashedPointedLinePlotScreen(),
-                ),
-              );
+              context.pushRoute(const DashedPointedLinePlotRoute());
             },
           ),
           const Divider(),
@@ -55,23 +41,7 @@ class LinePlotScreen extends StatelessWidget {
             title: const Text("Animated Line Plot"),
             subtitle: const Text("Different curve and duration"),
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const AnimatedLinePlotScreen(),
-                ),
-              );
-            },
-          ),
-          const Divider(),
-          ListTile(
-            title: const Text("Life expentancy in America"),
-            subtitle: const Text("Multiple line curves"),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const LifeExpentancyAmericaScreen(),
-                ),
-              );
+              context.pushRoute(const AnimatedLinePlotRoute());
             },
           ),
           const Divider(),

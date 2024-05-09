@@ -1,7 +1,8 @@
-import 'package:example/features/dependency_wheel/screens/commercial_balance_dependency_wheel_screen.dart';
-import 'package:example/features/dependency_wheel/screens/import_export_dependency_wheel_screen.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:example/core/config/router/app_router.dart';
 import 'package:flutter/material.dart';
 
+@RoutePage()
 class DependencyWheelScreen extends StatelessWidget {
   const DependencyWheelScreen({super.key});
 
@@ -15,11 +16,7 @@ class DependencyWheelScreen extends StatelessWidget {
             title: const Text("Sells of iPhones and Androids"),
             subtitle: const Text(""),
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const AndroidIphoneDependencyWheelScreen(),
-                ),
-              );
+              context.pushRoute(const AndroidIphoneDependencyWheelRoute());
             },
           ),
           const Divider(),
@@ -27,11 +24,7 @@ class DependencyWheelScreen extends StatelessWidget {
             title: const Text("Commercial Balande between different countries"),
             subtitle: const Text(""),
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const ImportExportDependencyWheelScreen(),
-                ),
-              );
+              context.pushRoute(const ImportExportDependencyWheelRoute());
             },
           ),
           const Divider(),

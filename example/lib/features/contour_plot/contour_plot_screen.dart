@@ -1,6 +1,8 @@
-import 'package:example/features/contour_plot/screens/basic_contour_plot_screen.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:example/core/config/router/app_router.dart';
 import 'package:flutter/material.dart';
 
+@RoutePage()
 class ContourPlotScreen extends StatelessWidget {
   const ContourPlotScreen({super.key});
 
@@ -14,10 +16,8 @@ class ContourPlotScreen extends StatelessWidget {
             title: const Text("Contour Line Plot"),
             subtitle: const Text("A simple contour chart"),
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const BasicContourPlotScreen(),
-                ),
+              context.pushRoute(
+                const BasicContourPlotRoute(),
               );
             },
           ),

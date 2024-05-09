@@ -1,8 +1,8 @@
-import 'package:example/features/bar_plot/screens/all_space_basic_bar_plot_screen.dart';
-import 'package:example/features/bar_plot/screens/basic_bar_plot_screen.dart';
-import 'package:example/features/bar_plot/screens/stacked_bar_plot_screen.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:example/core/config/router/app_router.dart';
 import 'package:flutter/material.dart';
 
+@RoutePage()
 class BarPlotScreen extends StatelessWidget {
   const BarPlotScreen({super.key});
 
@@ -16,10 +16,8 @@ class BarPlotScreen extends StatelessWidget {
             title: const Text("Simple Bar Plot"),
             subtitle: const Text("A simple bar chart"),
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const BasicBarPlotScreen(),
-                ),
+              context.pushRoute(
+                const BasicBarPlotRoute(),
               );
             },
           ),
@@ -28,10 +26,8 @@ class BarPlotScreen extends StatelessWidget {
             title: const Text("Full Space Simple Bar Plot"),
             subtitle: const Text("Use all the available space"),
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const FullSpaceBasicBarPlotScreen(),
-                ),
+              context.pushRoute(
+                const FullSpaceBasicBarPlotRoute(),
               );
             },
           ),
@@ -40,10 +36,8 @@ class BarPlotScreen extends StatelessWidget {
             title: const Text("Stacked Bar Plots"),
             subtitle: const Text("Several bar plots"),
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const StackedBarPlotScreen(),
-                ),
+              context.pushRoute(
+                const StackedBarPlotRoute(),
               );
             },
           ),

@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:pretty_charts/pretty_charts.dart';
 
 @RoutePage()
-class MultipleLinePlotsScreen extends StatelessWidget {
-  const MultipleLinePlotsScreen({super.key});
+class BasicLinePlotScreen extends StatelessWidget {
+  const BasicLinePlotScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Multiple line plots"),
+        title: const Text("Line plot"),
       ),
       body: Center(
         child: Padding(
@@ -21,7 +21,6 @@ class MultipleLinePlotsScreen extends StatelessWidget {
             width: 400,
             height: 400,
             child: LinePlot(
-              animationDuration: const Duration(milliseconds: 1250),
               axes: CartesianAxes(
                 xLimits: AxesLimit(-1, 1),
                 yLimits: AxesLimit(-1, 1),
@@ -29,6 +28,8 @@ class MultipleLinePlotsScreen extends StatelessWidget {
                 numberOfTicksOnY: 5,
                 showGrid: true,
                 title: "A great line plot",
+                xTitle: "times(s)",
+                yTitle: "voltage (mV)",
                 bordersToDisplay: [AxesBorder.left, AxesBorder.bottom],
                 arrowsToDisplay: [AxesBorder.top, AxesBorder.right],
                 xLabelsBuilder: (x) {
@@ -42,16 +43,6 @@ class MultipleLinePlotsScreen extends StatelessWidget {
                 LinePlotData(
                   onGenerateY: (x) {
                     return pow(x, 3).toDouble();
-                  },
-                ),
-                LinePlotData(
-                  onGenerateY: (x) {
-                    return pow(x, 2).toDouble();
-                  },
-                ),
-                LinePlotData(
-                  onGenerateY: (x) {
-                    return pow(x, 1).toDouble();
                   },
                 ),
               ],

@@ -1,8 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_charts/pretty_charts.dart';
 
-class BasicBubbleChart extends StatelessWidget {
-  const BasicBubbleChart({super.key});
+@RoutePage()
+class BasicBubbleChartScreen extends StatelessWidget {
+  const BasicBubbleChartScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pretty_charts/pretty_charts.dart';
 
+@RoutePage()
 class CategoryTreeMapChartScreen extends StatelessWidget {
   const CategoryTreeMapChartScreen({super.key});
 

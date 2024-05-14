@@ -1,8 +1,8 @@
-import 'package:example/features/pie_plot/screens/basic_pie_plot_screen.dart';
-import 'package:example/features/pie_plot/screens/country_population_pie_plot_screen.dart';
-import 'package:example/features/pie_plot/screens/donut_plot_screen.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:example/core/config/router/app_router.dart';
 import 'package:flutter/material.dart';
 
+@RoutePage()
 class PiePlotScreen extends StatelessWidget {
   const PiePlotScreen({super.key});
 
@@ -16,11 +16,7 @@ class PiePlotScreen extends StatelessWidget {
             title: const Text("Simple Bar Plot"),
             subtitle: const Text("A simple bar chart"),
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const BasicPiePlotScreen(),
-                ),
-              );
+              context.pushRoute(const BasicPiePlotRoute());
             },
           ),
           const Divider(),
@@ -28,23 +24,7 @@ class PiePlotScreen extends StatelessWidget {
             title: const Text("Country population"),
             subtitle: const Text("Countries with the biggest population"),
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const CountryPopulationPiePlotScreen(),
-                ),
-              );
-            },
-          ),
-          const Divider(),
-          ListTile(
-            title: const Text("Donut plot"),
-            subtitle: const Text("With a hole"),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const DonutPlotScreen(),
-                ),
-              );
+              context.pushRoute(const CountryPopulationPiePlotRoute());
             },
           ),
           const Divider(),

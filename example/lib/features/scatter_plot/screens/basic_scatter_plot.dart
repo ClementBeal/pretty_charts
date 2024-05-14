@@ -1,9 +1,11 @@
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_charts/pretty_charts.dart';
 
-class BasicScatterPlot extends StatelessWidget {
-  const BasicScatterPlot({super.key});
+@RoutePage()
+class BasicScatterPlotScreen extends StatelessWidget {
+  const BasicScatterPlotScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

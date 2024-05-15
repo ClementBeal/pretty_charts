@@ -88,23 +88,26 @@ class TernaryPlotPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     colorMap.reset();
-    const double internalPadding = 50.0;
+    const double internalPadding = 0.0;
+    final dimension = size.shortestSide;
 
-    final paddedWidth = size.width - 2 * internalPadding;
-    final paddedHeight = size.height - 2 * internalPadding;
-
-    final axesOrigin = Offset(
-      internalPadding,
-      size.height - internalPadding,
-    );
+    final paddedWidth = dimension - 2 * internalPadding;
+    final paddedHeight = dimension - 2 * internalPadding;
 
     final axesWidth = paddedWidth;
     final axesHeight = paddedHeight;
 
+    final triangleSize = sqrt(3) / 2;
+
+    final axesOrigin = Offset(
+      (size.width - dimension) / 2,
+      triangleSize * size.height - (triangleSize * size.height - dimension) / 2,
+    );
+
     final trianglePath = Path();
     trianglePath.moveTo(axesOrigin.dx, axesOrigin.dy);
     trianglePath.relativeLineTo(axesWidth, 0);
-    trianglePath.relativeLineTo(-axesWidth / 2, -axesHeight * sqrt(3) / 2);
+    trianglePath.relativeLineTo(-axesWidth / 2, -axesHeight * triangleSize);
     trianglePath.close();
 
     canvas.drawPath(trianglePath, trianglePainter);
@@ -140,7 +143,7 @@ class TernaryPlotPainter extends CustomPainter {
 
       canvas.drawPath(useDashedLine(majorLinesPath, 6, 3), majorLinePainter);
 
-      drawAxesLabels(canvas, size);
+      drawAxesLabels(canvas, dimension, axesOrigin);
 
       final blockPainter = Paint()..style = PaintingStyle.fill;
       final blockBorderPainter = Paint()
@@ -201,7 +204,7 @@ class TernaryPlotPainter extends CustomPainter {
     }
   }
 
-  void drawAxesLabels(Canvas canvas, Size size) {
+  void drawAxesLabels(Canvas canvas, double dimension, Offset axesOrigin) {
     final textPainter = TextPainter(textDirection: TextDirection.ltr);
     final textStyle = TextStyle(
       color: Colors.grey.shade400,
@@ -218,8 +221,10 @@ class TernaryPlotPainter extends CustomPainter {
     textPainter.layout();
     textPainter.paint(
       canvas,
-      Offset(size.width / 2 - textPainter.width / 2,
-          size.height - textPainter.height),
+      axesOrigin.translate(
+        dimension / 2 - textPainter.width / 2,
+        textPainter.height / 2,
+      ),
     );
 
     // left label
@@ -231,8 +236,10 @@ class TernaryPlotPainter extends CustomPainter {
     textPainter.layout();
     textPainter.paint(
       canvas,
-      Offset(size.width / 4 - textPainter.width / 2,
-          size.height / 2 - textPainter.height),
+      axesOrigin.translate(
+        dimension / 4 - textPainter.width / 2,
+        -dimension / 2 - textPainter.height / 2,
+      ),
     );
 
     // right label
@@ -244,8 +251,10 @@ class TernaryPlotPainter extends CustomPainter {
     textPainter.layout();
     textPainter.paint(
       canvas,
-      Offset(3 * size.width / 4 - textPainter.width / 2,
-          size.height / 2 - textPainter.height),
+      axesOrigin.translate(
+        dimension * 3 / 4 - textPainter.width / 2,
+        -dimension / 2 - textPainter.height / 2,
+      ),
     );
   }
 

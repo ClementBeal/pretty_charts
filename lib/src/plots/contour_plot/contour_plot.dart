@@ -290,7 +290,6 @@ class ContourPlotPainter extends CustomPainter {
       drawColorMap(canvas, Offset(width - 30, internalPadding), paddedHeight,
           minValue, maxValue, blueGreenRedSquential);
     }
-    print(DateTime.now().difference(a));
   }
 
   void drawColorMap(

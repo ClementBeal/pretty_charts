@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 enum ChartInteraction {
@@ -11,6 +12,7 @@ class ChartViewer extends StatefulWidget {
     required this.child,
     required this.onScale,
     required this.initialScale,
+    this.onHover,
     this.interactions = ChartInteraction.values,
     this.onTapUp,
   });
@@ -18,6 +20,7 @@ class ChartViewer extends StatefulWidget {
   final Widget child;
   final void Function(double scaleFactor, Offset offset) onScale;
   final void Function(TapUpDetails details)? onTapUp;
+  final void Function(PointerHoverEvent details)? onHover;
   final double initialScale;
   final List<ChartInteraction> interactions;
 
@@ -40,24 +43,29 @@ class _ChartViewerState extends State<ChartViewer> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onScaleStart: (details) {
-        _tmpScale = _scale;
+    return MouseRegion(
+      onHover: (event) {
+        widget.onHover?.call(event);
       },
-      onScaleUpdate: (details) {
-        if (widget.interactions.contains(ChartInteraction.scale)) {
-          _scale = _tmpScale * details.scale;
-        }
-        if (widget.interactions.contains(ChartInteraction.move)) {
-          _offset += details.focalPointDelta * 0.9;
-        }
+      child: GestureDetector(
+        onScaleStart: (details) {
+          _tmpScale = _scale;
+        },
+        onScaleUpdate: (details) {
+          if (widget.interactions.contains(ChartInteraction.scale)) {
+            _scale = _tmpScale * details.scale;
+          }
+          if (widget.interactions.contains(ChartInteraction.move)) {
+            _offset += details.focalPointDelta * 0.9;
+          }
 
-        widget.onScale(_scale, _offset);
-      },
-      onTapUp: (details) {
-        widget.onTapUp?.call(details);
-      },
-      child: widget.child,
+          widget.onScale(_scale, _offset);
+        },
+        onTapUp: (details) {
+          widget.onTapUp?.call(details);
+        },
+        child: widget.child,
+      ),
     );
   }
 }

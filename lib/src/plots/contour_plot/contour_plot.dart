@@ -3,8 +3,6 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pretty_charts/src/axes/axes.dart';
 import 'package:pretty_charts/src/axes/plot_framework.dart';
 import 'package:pretty_charts/src/plots/contour_plot/contour_plot_data.dart';
@@ -120,7 +118,7 @@ class ContourPlotPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     const double internalPadding = 50.0;
-    const int points = 300;
+    const int points = 150;
     final xAxesRange =
         axes.xLimits.translate(-offset.dx / 100).scale(scaleFactor);
     final yAxesRange =
@@ -133,6 +131,7 @@ class ContourPlotPainter extends CustomPainter {
 
     const paddedTopLeftCorner = Offset(internalPadding, internalPadding);
 
+    final a = DateTime.now();
     // draw a curve
     for (var d in data) {
       final contourPainter = Paint()
@@ -149,6 +148,9 @@ class ContourPlotPainter extends CustomPainter {
 
       var iYSpacing = 0.0;
       var iPoints = 0;
+
+      // we calculate the min and max values of the current grid
+      // and obviously, the value for a (X,Y) point
       for (var i = 0; i < points; i++) {
         var jXSpacing = 0.0;
         for (var j = 0; j < points; j++) {
@@ -156,8 +158,8 @@ class ContourPlotPainter extends CustomPainter {
           final y = yAxesRange.minLimit + iYSpacing;
 
           final value = d.onGenerate(x, y);
-          minValue = min(minValue, value);
-          maxValue = max(maxValue, value);
+          minValue = minValue < value ? minValue : value;
+          maxValue = maxValue > value ? maxValue : value;
           values[j + iPoints] = value;
 
           jXSpacing += xSpacing;
@@ -166,6 +168,7 @@ class ContourPlotPainter extends CustomPainter {
         iPoints += points;
       }
 
+      // trace the iso line
       for (var i = 0; i < d.nbLines; i++) {
         final isoValue = (maxValue - minValue) / d.nbLines * (i);
         contourPainter.color = blueGreenRedSquential
@@ -173,24 +176,27 @@ class ContourPlotPainter extends CustomPainter {
 
         final binaryImage = Uint8List(values.length);
 
+        // first step of the marching square algorithm
+        // all the cells greater than are = 1
         for (var i = 0; i < values.length; i++) {
-          final a = values[i];
-          if (a > isoValue) {
-            binaryImage[i] = 1;
-          } else {
-            binaryImage[i] = 0;
-          }
+          binaryImage[i] = (values[i] > isoValue) ? 1 : 0;
         }
 
         const lim = points - 1;
-        final contouringGrid = Uint8List(lim * lim);
+        const maxElements = lim * lim;
+        final contouringGrid = Uint8List(maxElements);
         final widthCell = paddedWidth / points;
         final heightCell = paddedHeight / points;
 
         final halfWidthCell = widthCell / 2;
         final halfHeightCell = heightCell / 2;
 
-        for (var i = 0; i < lim * lim; i++) {
+        final cachedValues = <(int, int, int)>[];
+
+        // second step of the algorithm
+        // we place a "vertex" between 4 cells and we apply some bit operations
+        // final values between 0 and 15
+        for (var i = 0; i < maxElements; i++) {
           final firstIndex = i + i ~/ lim;
           final topLeftCorner = binaryImage[firstIndex];
           final topRightCorner = binaryImage[firstIndex + 1];
@@ -202,25 +208,31 @@ class ContourPlotPainter extends CustomPainter {
               bottomRightCorner << 1 |
               bottomLeftCorner;
           contouringGrid[i] = a;
-        }
 
-        // draw the contour
-        final path = Path();
-        for (var i = 0; i < contouringGrid.length; i++) {
-          final v = contouringGrid[i];
-          if (v == 0 && v == 15) {
-            continue;
-          }
           final x = i % lim;
           final y = i ~/ lim;
 
+          if (a != 0 && a != 15) {
+            cachedValues.add((x, y, a));
+          }
+        }
+
+        if (cachedValues.isEmpty) {
+          continue;
+        }
+
+        final path = Path();
+
+        // third step of the algorithm
+        //  we draw the contour
+        // there's  mapping taking the value (0-15) to a pattern
+        for (final node in cachedValues) {
+          final v = node.$3;
+
           final o = paddedTopLeftCorner.translate(
-              widthCell * (x + 0.5), (heightCell * (0.5 + y)));
+              widthCell * (node.$1 + 0.5), (heightCell * (0.5 + node.$2)));
 
           switch (v) {
-            case 0:
-            case 15:
-              break;
             case 1:
             case 14:
               path.moveTo(o.dx, o.dy + halfHeightCell);
@@ -278,6 +290,7 @@ class ContourPlotPainter extends CustomPainter {
       drawColorMap(canvas, Offset(width - 30, internalPadding), paddedHeight,
           minValue, maxValue, blueGreenRedSquential);
     }
+    print(DateTime.now().difference(a));
   }
 
   void drawColorMap(
